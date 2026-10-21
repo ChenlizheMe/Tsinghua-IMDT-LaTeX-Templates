@@ -3,11 +3,12 @@
 % 开题报告主入口：XeLaTeX -> BibTeX -> XeLaTeX -> XeLaTeX，或 latexmk。
 \input{config/project-options}
 \ifIMDTUseWindowsFonts
-  \PassOptionsToClass{fontset=windows,font=times}{thuthesis}
+  \PassOptionsToClass{fontset=none,font=none,cjk-font=none}{thuthesis}
 \else
   \PassOptionsToClass{fontset=fandol,font=termes}{thuthesis}
 \fi
 \documentclass[degree=master,degree-type=professional,thesis-type=proposal]{thuthesis}
+\ifIMDTUseWindowsFonts\input{config/word-fonts}\fi
 \input{config/metadata}
 \input{config/report-setup}
 

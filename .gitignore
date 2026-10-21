@@ -18,3 +18,6 @@ build/
 *.snm
 .DS_Store
 Thumbs.db
+fonts/*.ttf
+fonts/*.ttc
+fonts/*.otf

@@ -16,7 +16,7 @@
 1. 下载整个仓库 ZIP，在 Overleaf 选择 New Project → Upload Project。请上传整个工程，不能只上传两个主入口。
 2. Compiler 选择 **XeLaTeX**。使用近期 TeX Live；工程自带固定版本的排版类和参考文献样式。
 3. Main document 选择上表中的一个主入口，重新编译。Overleaf 的 latexmk 会自动调用 BibTeX；不需要手动维护文献编号。
-4. 切换 Main document 可分别得到报告和工作计划表。两份文档使用不同排版类，切换后请在 Recompile 旁的下拉菜单选择 **Recompile from scratch**，避免旧辅助文件互相影响。
+4. 切换 Main document 可分别得到报告和工作计划表。根目录的 `latexmkrc` 会自动识别 Overleaf 的共享编译缓存并在入口切换时重建根辅助文件。升级旧项目后如仍读到旧缓存，可选择一次 **Recompile from scratch**。
 
 需要 GitHub 同步时，在 Overleaf 关联 GitHub，再用 New Project → Import from GitHub 导入本仓库。后续通过 Integrations → GitHub 手动推送或拉取。该同步功能需要 Overleaf 的相应订阅权限；没有同步权限也能上传 ZIP 编译。参见 [Overleaf 官方说明](https://docs.overleaf.com/integrations-and-add-ons/git-integration-and-github-synchronization/github-synchronization)。
 
@@ -100,6 +100,6 @@ latexmk -xelatex imdt-topic-work-plan.tex
 
 仓库中保留的完整 PDF 明确标为 2025-03，没有把它冒称为 2026 版。逐项规则、来源、已核对范围和 IMDT 专用格式见 [格式依据](docs/formatting-basis.md)。
 
-默认便携字体与指南点名的中易宋体、黑体、Times New Roman、Arial 并非完全相同字库。需要指定字库时可开启 IMDTUseWindowsFonts，并在有权使用这些字体的环境中编译。字体和打印模式的切换方法见写作工作流。
+公开仓库不分发商业字体，默认预览使用 Fandol 与 TeX Gyre。要按原 Word 的字库输出，在私有项目的 `fonts/` 提供真实宋体、黑体、楷体、仿宋、Times New Roman 和 Arial 文件，工程会自动启用；严格模式不会静默替换字体。在已安装字库的 Windows 上也可开启 IMDTUseWindowsFonts。具体文件名和配置见 [字体说明](fonts/README.md)。
 
 上游 ThuThesis 文件未经修改，其许可证和来源见 [第三方说明](THIRD_PARTY_NOTICES.md)。

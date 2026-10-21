@@ -11,3 +11,5 @@
 \IMDTShowSymbolsfalse          % 符号和缩略语说明
 \newif\ifIMDTIncludeAppendix
 \IMDTIncludeAppendixfalse      % 可选的长表、子图、算法等排版示例
+% 私有工程提供原字库后自动使用 Word 字体，不静默替换为 Fandol。
+\IfFileExists{fonts/SimSun.ttc}{\IMDTUseWindowsFontstrue}{}

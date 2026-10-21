@@ -61,7 +61,7 @@ config/project-options.tex 中的开关由两个主入口共用。
 
 没有完整编译产生的辅助信息时，被排除章节的编号、目录和引用可能暂时不完整。提交或生成最终 PDF 前，重新注释 includeonly 并完整构建。Overleaf 改动较大时可使用 Recompile from scratch。
 
-在 Overleaf 的同一项目中切换两个主入口时，应使用 Recompile from scratch。Overleaf 会复用编译缓存；报告与表格采用不同排版类，普通重编译可能读取上一份文档的辅助命令，出现如 `\pp@pagectr` 未定义的错误。也可在日志面板先 Clear cached files，再重新编译；无需修改正文。两份入口已在 Overleaf 的 TeX Live 2026 / XeLaTeX 环境实际验证。
+Overleaf 统一使用 `output` 作为编译任务名。报告与表格采用不同排版类，直接复用根辅助文件会出现如 `\pp@pagectr` 未定义的错误。工程的 `latexmkrc` 通过 latexmk 官方支持的 internal 子程序，在共享根辅助文件中记录当前入口；入口改变时仅重建该生成文件，保留源文件、PDF 和章节缓存。本地使用不同任务名时不执行这一步。旧项目升级后可先 Recompile from scratch 一次，后续正常切换、重编译即可。两份入口已在 Overleaf 的 TeX Live 2026 / XeLaTeX 环境实际验证。
 
 ## 图表公式与引用
 
@@ -87,7 +87,7 @@ config/project-options.tex 中的开关由两个主入口共用。
 
 ## 字体与打印
 
-默认便携字库保证 Overleaf 开箱即用。若提交要求具体的中易宋体、黑体、仿宋、Times New Roman 和 Arial，开启 IMDTUseWindowsFonts 后，在已安装相应字体的 Windows 环境中构建。Overleaf 则需要使用者有权使用并按 ThuThesis 的字库配置说明提供相应字体；本仓库不分发商业字体。
+公开预览使用便携字体。按 Word 字库提交时，在私有 Overleaf 项目的 fonts/ 放入字体说明列出的文件；检测到 SimSun.ttc 后自动启用真实字库。也可在装有这些字库的 Windows 上开启 IMDTUseWindowsFonts。两份文档共用 config/word-fonts.tex，正文用宋体，报告标题用黑体，计划表第 4 页标题按原件用加粗宋体，该页脚注用楷体；西文用 Times New Roman，报告标题中的西文用 Arial。严格模式缺少字体文件会报错，不会静默换用 Fandol。字体文件不纳入公共 Git 仓库或 git archive 的 ZIP。
 
 开启 IMDTPrint 生成适合双面印刷的必要空白页；使用实际纸张尺寸，报告为 A4，工作计划表为 B5。不要依靠打印机“缩放到纸张”改变原始表格比例。
 

@@ -1,0 +1,30 @@
+% Word 指定的真实字库；私有字体文件优先，否则查找本机已安装字库。
+% 严格模式不使用 Fandol / TeX Gyre 作为字体缺失时的替代品。
+\IfFileExists{fonts/SimSun.ttc}{%
+  \setmainfont{times.ttf}[Path=fonts/,
+    BoldFont=timesbd.ttf,ItalicFont=timesi.ttf,BoldItalicFont=timesbi.ttf]
+  \setsansfont{arial.ttf}[Path=fonts/,
+    BoldFont=arialbd.ttf,ItalicFont=ariali.ttf,BoldItalicFont=arialbi.ttf]
+  \setCJKmainfont{SimSun.ttc}[Path=fonts/,FontIndex=0,AutoFakeBold=3,
+    ItalicFont=Simkai.ttf]
+  \setCJKsansfont{SimHei.ttf}[Path=fonts/,AutoFakeBold=3]
+  \setCJKmonofont{Simfang.ttf}[Path=fonts/]
+  \setCJKfamilyfont{zhsong}{SimSun.ttc}[Path=fonts/,FontIndex=0,AutoFakeBold=3]
+  \setCJKfamilyfont{zhhei}{SimHei.ttf}[Path=fonts/,AutoFakeBold=3]
+  \setCJKfamilyfont{zhkai}{Simkai.ttf}[Path=fonts/]
+  \setCJKfamilyfont{zhfs}{Simfang.ttf}[Path=fonts/]
+}{%
+  \setmainfont{Times New Roman}
+  \setsansfont{Arial}
+  \setCJKmainfont{SimSun}[AutoFakeBold=3,ItalicFont=KaiTi]
+  \setCJKsansfont{SimHei}[AutoFakeBold=3]
+  \setCJKmonofont{FangSong}
+  \setCJKfamilyfont{zhsong}{SimSun}[AutoFakeBold=3]
+  \setCJKfamilyfont{zhhei}{SimHei}[AutoFakeBold=3]
+  \setCJKfamilyfont{zhkai}{KaiTi}
+  \setCJKfamilyfont{zhfs}{FangSong}
+}
+\providecommand{\songti}{\CJKfamily{zhsong}}
+\providecommand{\heiti}{\CJKfamily{zhhei}}
+\providecommand{\kaishu}{\CJKfamily{zhkai}}
+\providecommand{\fangsong}{\CJKfamily{zhfs}}

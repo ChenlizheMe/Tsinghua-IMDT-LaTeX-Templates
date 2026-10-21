@@ -1,26 +1,38 @@
-% IMDT 项目原件指定的封面；不额外插入学位论文授权页。
+% IMDT 原件封面：字号及基线位置以 Word 导出 PDF 第 2 页为准。
+% 仅封面使用固定位置；正文仍由 ThuThesis 按学位论文指南排版。
 \hypersetup{pageanchor=false}
 \begin{titlepage}
   \thispagestyle{empty}
-  \centering
-  \vspace*{14mm}
-  {\heiti\fontsize{18bp}{26bp}\selectfont 清华大学硕士学位论文开题报告\par}
-  \vspace{21mm}
-  {\heiti\fontsize{22bp}{32bp}\selectfont \ThesisTitle\par}
-  \vfill
-  \begingroup
-  \fontsize{14bp}{25bp}\selectfont
-  \renewcommand{\arraystretch}{1.45}
-  \begin{tabular}{@{}p{30mm}p{112mm}@{}}
-    培养单位： & \SchoolName \\
-    专\hspace{2em}业： & \MajorName \\
-    申\hspace{0.5em}请\hspace{0.5em}人： & \StudentName \\
-    学\hspace{2em}号： & \StudentID \\
-    指导教师： & \Supervisor \\
-  \end{tabular}
-  \endgroup
-  \vspace{25mm}
-
-  {\fontsize{14bp}{20bp}\selectfont \ReportDate\par}
-  \vspace{10mm}
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=base,inner sep=0pt,font=\heiti\bfseries\fontsize{26bp}{34bp}\selectfont]
+      at ([yshift=-157.94bp]current page.north)
+      {清华大学硕士学位论文开题报告};
+    \node[anchor=base,inner sep=0pt,text width=150mm,align=center,
+      font=\heiti\bfseries\fontsize{22bp}{30bp}\selectfont]
+      at ([yshift=-229.58bp]current page.north) {\ThesisTitle};
+    \ifIMDTDraft
+      \node[anchor=base,inner sep=0pt,text=red,font=\heiti\bfseries\fontsize{10.5bp}{16bp}\selectfont]
+        at ([yshift=-260.90bp]current page.north)
+        {【论文题目在此行，居中，字数严格控制在25个汉字（符）以内】};
+    \fi
+    \node[anchor=base west,inner sep=0pt,font=\songti\fontsize{16bp}{24bp}\selectfont]
+      at ([xshift=153.98bp,yshift=-427.61bp]current page.north west)
+      {\makebox[105bp][l]{培\hfill 养\hfill 单\hfill 位：}\SchoolName};
+    \node[anchor=base west,inner sep=0pt,font=\songti\fontsize{16bp}{24bp}\selectfont]
+      at ([xshift=153.98bp,yshift=-460.39bp]current page.north west)
+      {\makebox[105bp][l]{专\hfill 业：}\MajorName};
+    \node[anchor=base west,inner sep=0pt,font=\songti\fontsize{16bp}{24bp}\selectfont]
+      at ([xshift=153.98bp,yshift=-493.15bp]current page.north west)
+      {\makebox[105bp][l]{申\hfill 请\hfill 人：}\StudentName};
+    \node[anchor=base west,inner sep=0pt,font=\songti\fontsize{16bp}{24bp}\selectfont]
+      at ([xshift=153.98bp,yshift=-525.91bp]current page.north west)
+      {\makebox[105bp][l]{学\hfill 号：}\StudentID};
+    \node[anchor=base west,inner sep=0pt,font=\songti\fontsize{16bp}{24bp}\selectfont]
+      at ([xshift=153.98bp,yshift=-558.67bp]current page.north west)
+      {\makebox[105bp][l]{指\hfill 导\hfill 教\hfill 师：}%
+        \ifdefempty{\Supervisor}{\ifIMDTDraft\textcolor{red}{（仅填写学籍系统导师）}\fi}{\Supervisor}};
+    \node[anchor=base,inner sep=0pt,font=\songti\fontsize{15bp}{22bp}\selectfont]
+      at ([yshift=-707.50bp]current page.north) {\ReportDate};
+  \end{tikzpicture}
+  \null
 \end{titlepage}

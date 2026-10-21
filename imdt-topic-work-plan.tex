@@ -2,7 +2,12 @@
 % !TeX encoding = UTF-8
 % 选题与工作计划表主入口，原件四页 B5 表格。
 \input{config/project-options}
-\documentclass[UTF8,fontset=fandol,zihao=5]{ctexart}
+\ifIMDTUseWindowsFonts
+  \PassOptionsToClass{fontset=none}{ctexart}
+\else
+  \PassOptionsToClass{fontset=fandol}{ctexart}
+\fi
+\documentclass[UTF8,zihao=5]{ctexart}
 \usepackage{iftex}
 \ifXeTeX\else
   \PackageError{imdt}{Please select XeLaTeX}{This project requires XeLaTeX.}
@@ -11,8 +16,7 @@
   top=28mm,bottom=20mm]{geometry}
 \usepackage{fontspec}
 \ifIMDTUseWindowsFonts
-  \setCJKmainfont{SimSun}\setCJKsansfont{SimHei}
-  \setmainfont{Times New Roman}
+  \input{config/word-fonts}
 \else
   \setmainfont{texgyretermes-regular.otf}[
     BoldFont=texgyretermes-bold.otf,ItalicFont=texgyretermes-italic.otf,
