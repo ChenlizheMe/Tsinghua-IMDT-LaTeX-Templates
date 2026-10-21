@@ -16,7 +16,7 @@
 1. 下载整个仓库 ZIP，在 Overleaf 选择 New Project → Upload Project。请上传整个工程，不能只上传两个主入口。
 2. Compiler 选择 **XeLaTeX**。使用近期 TeX Live；工程自带固定版本的排版类和参考文献样式。
 3. Main document 选择上表中的一个主入口，重新编译。Overleaf 的 latexmk 会自动调用 BibTeX；不需要手动维护文献编号。
-4. 切换 Main document 可分别得到报告和工作计划表。
+4. 切换 Main document 可分别得到报告和工作计划表。两份文档使用不同排版类，切换后请在 Recompile 旁的下拉菜单选择 **Recompile from scratch**，避免旧辅助文件互相影响。
 
 需要 GitHub 同步时，在 Overleaf 关联 GitHub，再用 New Project → Import from GitHub 导入本仓库。后续通过 Integrations → GitHub 手动推送或拉取。该同步功能需要 Overleaf 的相应订阅权限；没有同步权限也能上传 ZIP 编译。参见 [Overleaf 官方说明](https://docs.overleaf.com/integrations-and-add-ons/git-integration-and-github-synchronization/github-synchronization)。
 

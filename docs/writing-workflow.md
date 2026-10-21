@@ -61,6 +61,8 @@ config/project-options.tex 中的开关由两个主入口共用。
 
 没有完整编译产生的辅助信息时，被排除章节的编号、目录和引用可能暂时不完整。提交或生成最终 PDF 前，重新注释 includeonly 并完整构建。Overleaf 改动较大时可使用 Recompile from scratch。
 
+在 Overleaf 的同一项目中切换两个主入口时，应使用 Recompile from scratch。Overleaf 会复用编译缓存；报告与表格采用不同排版类，普通重编译可能读取上一份文档的辅助命令，出现如 `\pp@pagectr` 未定义的错误。也可在日志面板先 Clear cached files，再重新编译；无需修改正文。两份入口已在 Overleaf 的 TeX Live 2026 / XeLaTeX 环境实际验证。
+
 ## 图表公式与引用
 
 建议标签命名：
