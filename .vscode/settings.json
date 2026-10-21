@@ -1,0 +1,15 @@
+{
+  "files.encoding": "utf8",
+  "editor.wordWrap": "on",
+  "latex-workshop.latex.recipe.default": "first",
+  "latex-workshop.latex.recipes": [
+    { "name": "latexmk XeLaTeX + BibTeX", "tools": ["latexmk-xelatex"] }
+  ],
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk-xelatex",
+      "command": "latexmk",
+      "args": ["-xelatex", "-synctex=1", "-interaction=nonstopmode", "-file-line-error", "%DOC%"]
+    }
+  ]
+}

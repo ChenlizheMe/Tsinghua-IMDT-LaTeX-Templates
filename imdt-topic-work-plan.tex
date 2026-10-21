@@ -1,0 +1,32 @@
+% !TeX program = xelatex
+% !TeX encoding = UTF-8
+% 选题与工作计划表主入口，原件四页 B5 表格。
+\input{config/project-options}
+\documentclass[UTF8,fontset=fandol,zihao=5]{ctexart}
+\usepackage{iftex}
+\ifXeTeX\else
+  \PackageError{imdt}{Please select XeLaTeX}{This project requires XeLaTeX.}
+\fi
+\usepackage[paperwidth=182mm,paperheight=257mm,left=15mm,right=15mm,
+  top=28mm,bottom=20mm]{geometry}
+\usepackage{fontspec}
+\ifIMDTUseWindowsFonts
+  \setCJKmainfont{SimSun}\setCJKsansfont{SimHei}
+  \setmainfont{Times New Roman}
+\else
+  \setmainfont{texgyretermes-regular.otf}[
+    BoldFont=texgyretermes-bold.otf,ItalicFont=texgyretermes-italic.otf,
+    BoldItalicFont=texgyretermes-bolditalic.otf]
+\fi
+\usepackage{amssymb,array,tabularx,enumitem,xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\input{config/metadata}
+\input{config/work-plan-fields}
+\input{config/form-layout}
+\hypersetup{pdftitle={研究生选题报告及论文工作计划},pdfauthor={\StudentName}}
+\begin{document}
+\input{forms/cover}
+\input{forms/topic-literature}
+\input{forms/assessment}
+\input{forms/work-plan}
+\end{document}

@@ -1,0 +1,54 @@
+% 排版由未修改的 ThuThesis v7.7.1 管理：四边 3cm、20bp 正文行距、
+% 标题层级、目录、页眉页码、图表公式、脚注与参考文献样式。
+% 不在正文中用 \vspace 或 \fontsize 修补版式。
+\ifIMDTPrint
+  \thusetup{output=print}
+\else
+  \thusetup{output=electronic}
+\fi
+\thusetup{
+  math-font=xits,
+  title={\ThesisTitle},
+  author={\StudentName},
+  student-id={\StudentID},
+  department={\SchoolName},
+  degree-category={电子信息硕士},
+  professional-field={互动媒体设计与技术},
+}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{tabularx,longtable,threeparttable,multirow}
+\usepackage{siunitx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[sort&compress]{natbib}
+\bibliographystyle{thuthesis-numeric}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{hidelinks,unicode,bookmarksnumbered=true,
+  pdftitle={\ThesisTitle},pdfauthor={\StudentName}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\crefname{figure}{图}{图}
+\crefname{table}{表}{表}
+\crefname{section}{节}{节}
+\crefname{algorithm}{算法}{算法}
+\crefformat{chapter}{第#2#1#3章}
+\crefformat{equation}{式（#2#1#3）}
+\floatname{algorithm}{算法}
+\renewcommand{\algorithmicrequire}{\textbf{输入：}}
+\renewcommand{\algorithmicensure}{\textbf{输出：}}
+\makeatletter
+\@addtoreset{algorithm}{chapter}
+\makeatother
+\renewcommand{\thealgorithm}{\thechapter.\arabic{algorithm}}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\newcommand{\dif}{\mathop{}\!\mathrm{d}}
+\graphicspath{{figures/}}
+% 提示与待办只在草稿模式显示；正式正文写在这些宏之外。
+\newcommand{\WriteHere}[1]{\ifIMDTDraft{\color{black!55}#1}\par\fi}
+\newcommand{\TODO}[1]{\ifIMDTDraft{\color{red}\textbf{待办：}#1}\par\fi}
+% 防止模板短段落被拉伸成稀疏页面；不会改变正文固定行距。
+\raggedbottom

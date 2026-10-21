@@ -1,0 +1,16 @@
+% !TeX root = ../imdt-proposal-report.tex
+% 可编辑矢量示意图；用自己的流程替换节点内容。
+\begin{tikzpicture}[
+  node distance=4mm,
+  stage/.style={draw,rounded corners=1mm,minimum width=30mm,
+    minimum height=12mm,align=center,font=\fontsize{10.5bp}{13bp}\selectfont},
+  >={Stealth[length=2mm]}
+]
+  \node[stage] (question) {研究问题\\与需求分析};
+  \node[stage,right=of question] (prototype) {方案设计\\与原型实现};
+  \node[stage,right=of prototype] (evaluation) {实验评价\\与数据分析};
+  \node[stage,right=of evaluation] (iteration) {设计迭代\\与成果总结};
+  \draw[->] (question) -- (prototype);
+  \draw[->] (prototype) -- (evaluation);
+  \draw[->] (evaluation) -- (iteration);
+\end{tikzpicture}

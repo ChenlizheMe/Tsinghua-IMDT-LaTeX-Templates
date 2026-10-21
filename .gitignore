@@ -12,4 +12,9 @@
 *.bcf
 *.blg
 *.run.xml
-*.pdf
+/*.pdf
+build/
+*.nav
+*.snm
+.DS_Store
+Thumbs.db

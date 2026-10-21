@@ -1,0 +1,83 @@
+% !TeX root = ../imdt-proposal-report.tex
+\chapter{长稿件排版示例}
+\label{app:examples}
+本附录为可选的写作工具示例。正式报告按课题需要取用，删除不相关的示例。
+
+\section{标签与交叉引用}
+可用 \cref{chap:research-plan}、\cref{fig:research-route} 和
+\cref{tab:schedule} 引用正文对象。删除或增添章节后编号自动更新。
+公式编号也可通过 \cref{eq:example} 引用。
+数值和单位用统一命令，例如延迟 \SI{120}{\milli\second}。
+
+\section{子图与表下注释}
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{0.45\linewidth}
+    \centering
+    \fbox{\parbox[c][18mm][c]{0.88\linewidth}{\centering 原型方案一}}
+    \caption{方案一}\label{fig:prototype-a}
+  \end{subfigure}\hfill
+  \begin{subfigure}{0.45\linewidth}
+    \centering
+    \fbox{\parbox[c][18mm][c]{0.88\linewidth}{\centering 原型方案二}}
+    \caption{方案二}\label{fig:prototype-b}
+  \end{subfigure}
+  \caption{交互原型的分图示例}\label{fig:prototype-comparison}
+\end{figure}
+\begin{table}[htbp]
+  \centering
+  \begin{threeparttable}
+    \caption{评价指标示例}\label{tab:metrics}
+    \begin{tabular}{lll}
+      \toprule
+      指标 & 单位 & 说明\\
+      \midrule
+      任务时间 & s & 从任务开始到结束的耗时\tnote{a}\\
+      完成率 & \% & 成功完成的任务比例\\
+      \bottomrule
+    \end{tabular}
+    \begin{tablenotes}
+      \item[a] 此处仅演示表下注释；请替换为实际评价指标。
+    \end{tablenotes}
+  \end{threeparttable}
+\end{table}
+
+\section{跨页长表}
+长表直接使用 \texttt{longtable}，不要再嵌套在 \texttt{table} 浮动体中。
+首行表头、续页表头和末页表尾均已设置。
+\begin{longtable}{p{28mm}p{45mm}p{55mm}}
+  \caption{文献分析矩阵示例}\label{tab:literature-matrix}\\
+  \toprule 文献键 & 研究问题 & 方法与局限\\\midrule
+  \endfirsthead
+  \caption[]{文献分析矩阵示例（续）}\\
+  \toprule 文献键 & 研究问题 & 方法与局限\\\midrule
+  \endhead
+  \midrule\multicolumn{3}{r}{续下页}\\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  示例文献一 & 请填写研究问题 & 请填写方法和局限\\
+  示例文献二 & 请填写研究问题 & 请填写方法和局限\\
+  示例文献三 & 请填写研究问题 & 请填写方法和局限\\
+\end{longtable}
+
+\section{算法与定义}
+\begin{definition}[迭代停止条件]
+当评价指标达到预设阈值或达到最大迭代次数时，结束原型迭代。
+\end{definition}
+\begin{algorithm}[htbp]
+  \caption{原型迭代流程示例}\label{alg:iteration}
+  \begin{algorithmic}[1]
+    \Require 初始原型 $P_0$，最大迭代次数 $K$
+    \Ensure 迭代原型 $P$
+    \State $P \gets P_0$
+    \For{$k=1,\ldots,K$}
+      \State 收集用户评价并分析问题
+      \If{达到预设评价标准}
+        \State \textbf{break}
+      \EndIf
+      \State 修改原型 $P$
+    \EndFor
+    \State \Return $P$
+  \end{algorithmic}
+\end{algorithm}

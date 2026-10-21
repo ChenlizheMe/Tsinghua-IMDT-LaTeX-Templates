@@ -1,0 +1,39 @@
+% !TeX program = xelatex
+% !TeX encoding = UTF-8
+% 开题报告主入口：XeLaTeX -> BibTeX -> XeLaTeX -> XeLaTeX，或 latexmk。
+\input{config/project-options}
+\ifIMDTUseWindowsFonts
+  \PassOptionsToClass{fontset=windows,font=times}{thuthesis}
+\else
+  \PassOptionsToClass{fontset=fandol,font=termes}{thuthesis}
+\fi
+\documentclass[degree=master,degree-type=professional,thesis-type=proposal]{thuthesis}
+\input{config/metadata}
+\input{config/report-setup}
+
+% 大稿件局部编译：先完整编译一次，再取消下行注释；完整提交前重新注释。
+% \includeonly{chapters/03-research-plan}
+
+\begin{document}
+\input{frontmatter/imdt-cover}
+\frontmatter
+\hypersetup{pageanchor=true}
+\tableofcontents
+\ifIMDTShowLists
+  \listoffigures
+  \listoftables
+\fi
+\ifIMDTShowSymbols
+  \input{frontmatter/symbols}
+\fi
+\mainmatter
+\include{chapters/01-background}
+\include{chapters/02-related-work}
+\include{chapters/03-research-plan}
+\include{chapters/04-outcomes-schedule}
+\bibliography{bib/references}
+\ifIMDTIncludeAppendix
+  \appendix
+  \include{appendices/writing-examples}
+\fi
+\end{document}

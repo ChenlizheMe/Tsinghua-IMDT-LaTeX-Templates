@@ -1,0 +1,11 @@
+* text=auto eol=lf
+*.tex text
+*.bib text
+*.bst text
+*.cls text
+*.md text
+*.doc -text
+*.docx -text
+*.pdf -text
+*.png -text
+*.jpg -text
