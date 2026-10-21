@@ -2,6 +2,12 @@
 % 标题层级、目录、页眉页码、图表公式、脚注与参考文献样式。
 % 不在正文中用 \vspace 或 \fontsize 修补版式。
 % math-font 会触发 unicode-math；先加载 mathtools 以保持兼容。
+% 明确采用 mathtools 的上下方括号、unicode-math 的冒号符号。
+% 这两条上游选择通知记入日志 Info；保留所有其他警告和错误。
+\ExplSyntaxOn
+\msg_redirect_name:nnn {unicode-math} {mathtools-overbracket} {info}
+\msg_redirect_name:nnn {unicode-math} {mathtools-colon} {info}
+\ExplSyntaxOff
 \usepackage{mathtools}
 \ifIMDTPrint
   \thusetup{output=print}
