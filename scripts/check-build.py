@@ -14,7 +14,7 @@ patterns = {
     "overflow": r"Overfull \\[hv]box",
     "undefined reference": r"(?:Reference|Citation) .+ undefined|There were undefined (?:references|citations)",
     "duplicate label": r"multiply defined",
-    "rerun needed": r"Label\(s\) may have changed|Rerun to get cross-references right",
+    "rerun needed": r"Label\(s\) may have changed|Rerun to get cross-references right|Rerun to get /PageLabels",
     "fixed form overflow": r"fixed form value exceeds|Text exceeds a fixed form area",
 }
 
