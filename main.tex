@@ -1,0 +1,268 @@
+% !TeX program = xelatex
+% !TeX encoding = UTF-8
+% 清华大学 IMDT 硕士学位论文开题报告
+% 独立文件：在 Overleaf 中将本文件设为 Main document，选择 XeLaTeX。
+% 依据用户提供的 IMDT Word 模板转换；非学校官方发布的 LaTeX 模板。
+\documentclass[UTF8,fontset=fandol,zihao=-4,oneside,openany]{ctexbook}
+\usepackage{iftex}
+\ifXeTeX\else
+  \PackageError{imdt}{Please select XeLaTeX as the compiler}{This template requires XeLaTeX.}
+\fi
+\usepackage[a4paper,left=31.75mm,right=31.75mm,top=25.4mm,bottom=25.4mm,
+  headheight=15pt,headsep=7mm,footskip=10mm]{geometry}
+\usepackage{fontspec}
+\setmainfont{texgyretermes-regular.otf}[
+  BoldFont=texgyretermes-bold.otf,
+  ItalicFont=texgyretermes-italic.otf,
+  BoldItalicFont=texgyretermes-bolditalic.otf]
+\setsansfont{texgyreheros-regular.otf}[
+  BoldFont=texgyreheros-bold.otf,
+  ItalicFont=texgyreheros-italic.otf,
+  BoldItalicFont=texgyreheros-bolditalic.otf]
+% 默认字体随 TeX Live 提供，Overleaf 无需上传字体。
+% 若院系要求指定的 Windows 字库，可合法上传对应字体后在此替换：
+% \setCJKmainfont{SimSun} \setCJKsansfont{SimHei}
+% \setmainfont{Times New Roman} \setsansfont{Arial}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{array,tabularx,booktabs}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage[super]{cite}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{tocloft}
+\usepackage[hidelinks,unicode,bookmarksnumbered]{hyperref}
+
+% ==================== 个人信息填写区 ====================
+\newcommand{\ThesisTitle}{请填写论文题目}
+% 题目按原模板要求控制在 25 个汉字（符）以内。
+\newcommand{\StudentName}{请填写姓名}
+\newcommand{\StudentID}{请填写学号}
+\newcommand{\SchoolName}{深圳国际研究生院}
+\newcommand{\MajorName}{电子信息（互动媒体设计与技术）}
+\newcommand{\Supervisor}{请填写导师姓名}
+% 指导教师仅填写学籍系统中的导师。
+\newcommand{\ReportDate}{\hspace{1em}年\hspace{1em}月\hspace{1em}日}
+\newcommand{\ExpectedDefenseDate}{请填写预计答辩年月}
+
+\newif\ifShowHints
+\ShowHintstrue
+% 完成填写后改成 \ShowHintsfalse，可隐藏所有 \hint{...} 写作提示。
+\newcommand{\hint}[1]{\ifShowHints{\color{black!55}#1}\par\fi}
+
+% ==================== 正文格式 ====================
+% 原模板前部明确规定：正文 12bp、固定 20bp 行距；
+% 后部范例曾写 1.5 倍行距，此处采用前部的详细规定。
+\makeatletter
+\renewcommand\normalsize{\@setfontsize\normalsize{12bp}{20bp}}
+\makeatother
+\AtBeginDocument{\normalsize}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt}
+\linespread{1}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2} % 目录列至二级节标题，如 2.2.5
+\ctexset{
+  chapter = {
+    name = {,}, number = \arabic{chapter},
+    format = \centering\heiti\sffamily\fontsize{16bp}{20bp}\selectfont,
+    beforeskip = 24bp, afterskip = 18bp, fixskip = true,
+    aftername = \hspace{1em}, pagestyle = fancy
+  },
+  section = {
+    format = \heiti\sffamily\fontsize{14bp}{20bp}\selectfont,
+    beforeskip = 24bp, afterskip = 6bp, aftername = \hspace{1em}
+  },
+  subsection = {
+    format = \heiti\sffamily\fontsize{13bp}{20bp}\selectfont,
+    beforeskip = 12bp, afterskip = 6bp, aftername = \hspace{1em}
+  },
+  subsubsection = {
+    format = \heiti\sffamily\fontsize{12bp}{20bp}\selectfont,
+    beforeskip = 12bp, afterskip = 6bp, aftername = \hspace{1em}
+  },
+  contentsname = {目\quad 录},
+  bibname = {参考文献}
+}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\songti\fontsize{10.5bp}{14bp}\selectfont\nouppercase{\leftmark}}
+\fancyfoot[C]{\fontsize{10.5bp}{14bp}\selectfont\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter\quad #1}{}}
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \fancyhead[C]{\songti\fontsize{10.5bp}{14bp}\selectfont\nouppercase{\leftmark}}
+  \fancyfoot[C]{\fontsize{10.5bp}{14bp}\selectfont\thepage}
+  \renewcommand{\headrulewidth}{0.4pt}
+}
+
+% 目录：章不缩进，一级节缩进 1 字，二级节缩进 2 字；20bp 行距。
+\renewcommand{\cfttoctitlefont}{\hfill\heiti\sffamily\fontsize{16bp}{20bp}\selectfont}
+\renewcommand{\cftaftertoctitle}{\hfill}
+\setlength{\cftbeforetoctitleskip}{24bp}
+\setlength{\cftaftertoctitleskip}{18bp}
+\renewcommand{\cftchapfont}{\heiti\sffamily}
+\renewcommand{\cftchappagefont}{\sffamily}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftbeforechapskip}{0pt}
+\setlength{\cftbeforesecskip}{0pt}
+\setlength{\cftbeforesubsecskip}{0pt}
+\cftsetindents{chapter}{0em}{2em}
+\cftsetindents{section}{1em}{3em}
+\cftsetindents{subsection}{2em}{4em}
+
+% 图、表、公式按章编号：图 3.1、表 3.1、式（3.1）。
+\renewcommand{\thefigure}{\thechapter.\arabic{figure}}
+\renewcommand{\thetable}{\thechapter.\arabic{table}}
+\renewcommand{\theequation}{\thechapter.\arabic{equation}}
+\DeclareCaptionFont{imdt}{\songti\fontsize{11bp}{14bp}\selectfont}
+\DeclareCaptionLabelSeparator{zhspace}{\hspace{1em}}
+\captionsetup{font=imdt,labelsep=zhspace,justification=centering}
+\captionsetup[figure]{position=bottom,aboveskip=6bp,belowskip=12bp}
+\captionsetup[table]{position=top,aboveskip=6bp,belowskip=6bp}
+\setlength{\heavyrulewidth}{1.5bp}
+\setlength{\lightrulewidth}{1bp}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\setlist{nosep,leftmargin=2em}
+\hypersetup{pdftitle={\ThesisTitle},pdfauthor={\StudentName}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+
+% ==================== 第一页：封面 ====================
+\begin{titlepage}
+  \thispagestyle{empty}
+  \centering
+  \vspace*{14mm}
+  {\heiti\fontsize{18bp}{26bp}\selectfont 清华大学硕士学位论文开题报告\par}
+  \vspace{21mm}
+  {\heiti\fontsize{22bp}{32bp}\selectfont \ThesisTitle\par}
+  \vfill
+  \begingroup
+  \fontsize{14bp}{25bp}\selectfont
+  \renewcommand{\arraystretch}{1.45}
+  \begin{tabular}{@{}p{30mm}p{112mm}@{}}
+    培养单位： & \SchoolName \\
+    专\hspace{2em}业： & \MajorName \\
+    申\hspace{0.5em}请\hspace{0.5em}人： & \StudentName \\
+    学\hspace{2em}号： & \StudentID \\
+    指导教师： & \Supervisor \\
+  \end{tabular}
+  \endgroup
+  \vspace{25mm}
+
+  {\fontsize{14bp}{20bp}\selectfont \ReportDate\par}
+  \vspace{10mm}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+% ==================== 第二页：自动目录 ====================
+\pagenumbering{Roman}
+\pagestyle{plain}
+\markboth{目录}{}
+\tableofcontents
+\clearpage
+% ==================== 正文：从第 1 页开始编号 ====================
+\pagenumbering{arabic}
+\pagestyle{fancy}
+
+% 原 Word 提供四章版与六章版大纲。本模板采用四章版，覆盖所有必需内容。
+% 章标题用 \chapter，一级节用 \section，二级节用 \subsection。
+% 标题自动编号；无需手动输入“第1章”或“1.1”。
+\chapter{课题背景与意义}
+\section{选题背景}
+\hint{【在此说明研究所处的互动媒体设计与技术背景、具体应用场景、目标人群及现有问题。请用正式学术语言替换提示文字。】}
+
+\section{研究意义}
+\hint{【分别说明选题的理论意义、设计价值与工程应用价值，明确研究的边界与价值判断依据。】}
+
+\chapter{国内外研究现状及分析}
+\section{相关研究综述}
+\hint{【按研究问题或技术路线梳理国内外研究，比较其方法、证据和局限。文献综述应进行归纳与分析，避免简单堆砌摘要。原模板要求查阅不少于20篇中外文献，书面报告不少于5000字。】}
+\subsection{研究方向一}
+\hint{【将本节标题替换为具体研究方向。用 \texttt{\string\cite\{reference-placeholder\}} 在正文中插入上标引用，如此处的占位引用\cite{reference-placeholder}；文末对应条目须替换为真实文献。】}
+\subsection{研究方向二}
+\hint{【总结另一相关研究方向，比较与本课题的关系。可按需要增加二级节标题。】}
+\section{现有研究的不足与本课题切入点}
+\hint{【从前文文献证据提出尚待解决的问题，并说明本课题如何回应这些问题。】}
+
+\chapter{研究内容和主要创新点}
+\section{研究目标与研究内容}
+\hint{【明确总体目标，提炼3至4个可实施、可验证的研究点，并说明各研究点之间的关系。】}
+
+\section{研究方案与研究方法}
+\subsection{总体方案与技术路线}
+\hint{【说明设计流程或技术路线。下图为占位示例，引用外部图片须注明出处。】}
+\begin{figure}[htbp]
+  \centering
+  % 有图片后，用下行替换占位框，并将图片上传到 Overleaf：
+  % \includegraphics[width=0.85\linewidth]{your-figure.png}
+  \fbox{\parbox[c][20mm][c]{0.85\linewidth}{\centering
+    在此放置研究技术路线或系统架构图\\
+    图中文字、术语与单位应与正文保持一致}}
+  \caption{研究技术路线示意图（待替换）}
+  \label{fig:research-route}
+\end{figure}
+
+\subsection{研究方法与评价方案}
+\hint{【说明研究方法、数据来源、实验或用户研究流程、评价指标及可行性。式（\ref{eq:example}）为编号示例，提交前替换或删除。】}
+\begin{equation}
+  \label{eq:example}
+  \bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i
+\end{equation}
+
+\section{主要创新点}
+\hint{【对照已有研究，说明预期的设计或技术贡献及其验证依据。】}
+
+\section{关键难点及拟采取的解决措施}
+\hint{【逐项说明关键难点、产生原因、应对措施、替代方案及验证方法。】}
+
+\section{已具备和所需的条件}
+\hint{【说明已有工作基础、阶段性进展、设备和实验条件、数据与软件资源、外协计划及经费；明确尚待解决的条件问题。】}
+
+\chapter{预期成果及论文进度安排}
+\section{预期成果}
+\hint{【说明预期达到的水平和成果形式，如论文、交互原型、软件系统或设计作品，并给出完成或验收依据。】}
+
+\section{论文进度安排}
+\hint{【将表中的占位内容替换为具体年月和可检查的阶段成果。表题在表格上方，图题在图片下方；三线表与编号已设置。】}
+\begin{table}[htbp]
+  \caption{论文工作进度安排}
+  \label{tab:schedule}
+  \centering
+  \fontsize{11bp}{14bp}\selectfont
+  \renewcommand{\arraystretch}{1.45}
+  \begin{tabularx}{\linewidth}{@{}p{24mm}XY@{}}
+    \toprule
+    时间阶段 & 主要工作 & 阶段成果 \\
+    \midrule
+    待填起止年月 & 文献阅读与需求调研 & 文献综述与问题定义 \\
+    待填起止年月 & 方案设计与原型实现 & 设计方案与可运行原型 \\
+    待填起止年月 & 实验验证与设计迭代 & 分析结果与迭代记录 \\
+    待填起止年月 & 论文撰写与修改 & 学位论文与成果材料 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{预计答辩时间}
+预计答辩时间：\ExpectedDefenseDate。
+
+% ==================== 参考文献 ====================
+% 为保持两个 .tex 均为独立文件，此处使用内置 thebibliography，
+% 不依赖额外 .bib、.bst、.cls 文件，也无需运行 Biber。
+% 按正文首次引用顺序排列条目，并按最新写作指南人工核对著录格式。
+% 本示例不是实际文献，必须替换；继续添加 \bibitem{唯一键} 即可。
+\begin{thebibliography}{99}
+  \addcontentsline{toc}{chapter}{参考文献}
+  \markboth{参考文献}{}
+  \fontsize{10.5bp}{16bp}\selectfont
+  \setlength{\itemsep}{3bp}
+  \setlength{\parskip}{0pt}
+  \bibitem{reference-placeholder}
+  【文献条目占位，提交前替换】作者. 文献题名[J]. 期刊名, 年, 卷(期): 起止页码.
+\end{thebibliography}
+
+\end{document}

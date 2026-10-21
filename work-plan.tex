@@ -1,0 +1,260 @@
+% !TeX program = xelatex
+% !TeX encoding = UTF-8
+% 清华大学专业学位硕士研究生选题报告及论文工作计划（202401版）
+% 独立文件：在 Overleaf 中将本文件设为 Main document，选择 XeLaTeX。
+% 依据用户提供的 Word 表格转制；默认保留原件四页 B5 结构。
+\documentclass[UTF8,fontset=fandol,zihao=5]{ctexart}
+\usepackage{iftex}
+\ifXeTeX\else
+  \PackageError{imdt}{Please select XeLaTeX as the compiler}{This template requires XeLaTeX.}
+\fi
+\usepackage[paperwidth=182mm,paperheight=257mm,left=15mm,right=15mm,
+  top=28mm,bottom=20mm]{geometry}
+\usepackage{fontspec}
+\setmainfont{texgyretermes-regular.otf}[
+  BoldFont=texgyretermes-bold.otf,
+  ItalicFont=texgyretermes-italic.otf,
+  BoldItalicFont=texgyretermes-bolditalic.otf]
+% 中文默认 Fandol 宋体/黑体；不依赖本机字体或外部文件。
+% 若院系另有字库要求，可合法上传字体后替换：
+% \setCJKmainfont{SimSun} \setCJKsansfont{SimHei}
+% \setmainfont{Times New Roman}
+\usepackage{amssymb}
+\usepackage{array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+
+% ==================== 个人信息填写区 ====================
+% 两个 .tex 独立编译，个人信息请分别填写。
+\newcommand{\StudentName}{}
+\newcommand{\StudentID}{}
+\newcommand{\SchoolName}{深圳国际研究生院}
+\newcommand{\MajorName}{电子信息（互动媒体设计与技术）}
+\newcommand{\Supervisor}{}
+\newcommand{\SupervisorRank}{}
+\newcommand{\EnrollmentDate}{}
+\newcommand{\FormDate}{\hspace{1em}年\hspace{1em}月\hspace{1em}日}
+\newcommand{\ThesisTitle}{}
+\newcommand{\TopicScope}{}
+\newcommand{\ClassificationNumber}{}
+\newcommand{\ProposalMeetingDate}{\hspace{1em}年\hspace{1em}月\hspace{1em}日}
+\newcommand{\CrossDisciplineName}{}
+\newcommand{\DomesticReferenceCount}{}
+\newcommand{\ForeignReferenceCount}{}
+
+% 需要勾选的项目，把对应的 {} 改为 {\tick}；未选项目留空。
+% 每组“是/否”只能勾选一项；论文类型只可勾选一项。
+\newcommand{\PublicMark}{}
+\newcommand{\SecretMark}{}
+\newcommand{\ConfidentialMark}{}
+\newcommand{\CrossYes}{}
+\newcommand{\CrossNo}{}
+\newcommand{\ExpertYes}{}
+\newcommand{\ExpertNo}{}
+\newcommand{\ExperimentYes}{}
+\newcommand{\ExperimentNo}{}
+\newcommand{\TrainingYes}{}
+\newcommand{\TrainingNo}{}
+\newcommand{\SafetyReportYes}{}
+\newcommand{\SafetyReportNo}{}
+\newcommand{\TypeResearch}{}
+\newcommand{\TypeSurvey}{}
+\newcommand{\TypeCase}{}
+\newcommand{\TypeProduct}{}
+\newcommand{\TypeScheme}{}
+\newcommand{\TypeOther}{}
+\newcommand{\OtherTypeDescription}{}
+
+% 可在下列宏中直接填写文字；段落之间可以使用 \par。
+\newcommand{\KeyReferences}{}
+\newcommand{\AdvisorComment}{}
+\newcommand{\ResearchConditions}{}
+\newcommand{\ProjectCategory}{}
+\newcommand{\MainWorkPlan}{}
+\newcommand{\LiteratureCompletionDate}{}
+\newcommand{\ResearchCompletionDate}{}
+\newcommand{\WritingCompletionDate}{}
+% 考核意见、成绩和手写签名栏按原模板保留空白，交相应人员填写。
+
+\newif\ifShowFormHints
+\ShowFormHintstrue
+% 正式打印时可改为 \ShowFormHintsfalse，隐藏原件中的红色填写提示。
+\newcommand{\formhint}[1]{\ifShowFormHints{\color{red}#1}\fi}
+
+% ==================== 表格格式（一般无需修改） ====================
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\tabcolsep}{4pt}
+\setlength{\arrayrulewidth}{0.4pt}
+\linespread{1}
+\xeCJKDeclareCharClass{CJK}{"2460 -> "2465}
+\AtBeginDocument{\fontsize{10.5bp}{14bp}\selectfont}
+\newcommand{\tick}{\ensuremath{\checkmark}}
+\newcommand{\option}[1]{（\makebox[1em][c]{#1}）}
+\newcommand{\field}[2][28mm]{\underline{\makebox[#1][c]{#2}}}
+\newcommand{\blankdate}{\hspace{1em}年\hspace{1em}月\hspace{1em}日}
+\newlength{\FormInnerWidth}
+\setlength{\FormInnerWidth}{\dimexpr\textwidth-2\tabcolsep-2\arrayrulewidth\relax}
+% 单元格设置“最小高度”，填写内容较多时会自然增高，不裁切文字。
+% 每页表格不自动跨页；超出预留空间时请缩减文字或另附续页。
+\newcommand{\FormCell}[2]{%
+  \begingroup
+  \setbox0=\vbox{%
+    \hsize=\linewidth
+    \fontsize{10.5bp}{14bp}\selectfont
+    \setlength{\parindent}{0pt}\setlength{\parskip}{0pt}%
+    \vspace{1.5mm}#2\par\vspace{1.5mm}}%
+  \dimen0=#1\relax
+  \ifdim\dimexpr\ht0+\dp0\relax<\dimen0
+    \setbox0=\vbox to \dimen0{\unvbox0\vfil}%
+  \fi
+  \leavevmode\box0
+  \endgroup}
+\newenvironment{FormTable}
+  {\par\noindent\begin{tabular}{|p{\FormInnerWidth}|}\hline}
+  {\end{tabular}\par}
+\setlist[enumerate]{label=\arabic*.,leftmargin=2em,itemsep=0pt,
+  topsep=0pt,parsep=0pt,partopsep=0pt}
+\hypersetup{pdftitle={研究生选题报告及论文工作计划},pdfauthor={}}
+
+\begin{document}
+
+% ==================== 第 1 页：封面 ====================
+\begingroup
+\centering
+\vspace*{11mm}
+{\songti\fontsize{22bp}{30bp}\selectfont 清\hspace{1.1em}华\hspace{1.1em}大\hspace{1.1em}学\par}
+\vspace{12mm}
+{\songti\fontsize{18bp}{26bp}\selectfont 攻\hspace{0.4em}读\hspace{0.4em}硕\hspace{0.4em}士\hspace{0.4em}学\hspace{0.4em}位\par}
+\vspace{6mm}
+{\songti\fontsize{18bp}{26bp}\selectfont 研究生选题报告及论文工作计划\par}
+{\fontsize{12bp}{20bp}\selectfont （202401版）\par}
+\vspace{23mm}
+\fontsize{12bp}{20bp}\selectfont
+\begin{tabular}{@{}l@{}}
+研究生姓名\ \field[36mm]{\StudentName}\quad 学号\ \field[39mm]{\StudentID}\\[9mm]
+院\hspace{3em}系\ \field[99mm]{\SchoolName}\\[9mm]
+专业学位类别\ \field[91mm]{\MajorName}\\[9mm]
+指导教师\ \field[40mm]{\Supervisor}\ 专业技术职务\ \field[28mm]{\SupervisorRank}\\[9mm]
+入学日期\ \field[99mm]{\EnrollmentDate}
+\end{tabular}
+\vfill
+{\fontsize{12bp}{20bp}\selectfont \FormDate\par}
+\vspace*{8mm}
+\endgroup
+\clearpage
+
+% ==================== 第 2 页：选题与文献 ====================
+\begin{FormTable}
+  \FormCell{51mm}{%
+    论文题目：\field[117mm]{\ThesisTitle}\par
+    或选题范围：\field[113mm]{\TopicScope}\par
+    论文密级请在（\quad）中打“\tick”：公开\option{\PublicMark}\quad
+    秘密\option{\SecretMark}\quad 机密\option{\ConfidentialMark}\textsuperscript{1}\par
+    定密申请表编号：\field[43mm]{\ClassificationNumber}
+    {\fontsize{9bp}{12bp}\selectfont （对于密级为秘密或机密的学位论文）}\par
+    选题报告会日期：\ProposalMeetingDate\par
+    论文选题是否涉及跨专业学位类别：是\option{\CrossYes}\textsuperscript{2}
+    \field[31mm]{\CrossDisciplineName}\quad 否\option{\CrossNo}\par
+    {\fontsize{9.5bp}{13bp}\selectfont
+    若涉及，选题报告会是否已聘请所涉其他专业学位类别的专家参加：
+    是\option{\ExpertYes}\quad 否\option{\ExpertNo}\par}
+  }\\\hline
+  \FormCell{56mm}{%
+    选题报告要求：
+    \begin{enumerate}
+      \item 选题报告的字数一般不少于五千字；
+      \item 选题报告的内容应包括：选题意义、该领域国内外研究动态（文献综述）、本课题研究的目的、预期成果、研究方案、研究方法及其论证、关键难点拟采取的解决措施、论文工作总体日程安排，预计答辩时间等；
+      \item 要求查阅一定数量的中、外文献资料。文献综述部分不是将文献内容进行简单的堆砌，而应通过阅读、消化、提炼，对已有的研究成果和动态进行全面的综述；
+      \item 选题报告的考核由两部分组成：书面报告和口头报告，分别评分后给出一个总成绩；
+      \item 选题报告和研究工作应具有正确的政治立场，符合学术规范；
+      \item 填好“研究生选题报告及论文工作计划”表格后，连同书面报告一起交院系研究生管理部门备案。
+    \end{enumerate}
+  }\\\hline
+  \FormCell{78mm}{%
+    阅读国内外文献情况：\par
+    \hspace{1em}国内文献约\field[22mm]{\DomesticReferenceCount}篇，
+    国外文献约\field[26mm]{\ForeignReferenceCount}篇。\par
+    主要文献：\par
+    \KeyReferences
+  }\\\hline
+\end{FormTable}
+\vspace{2mm}
+{\fontsize{8bp}{10.5bp}\selectfont
+\textsuperscript{1} 涉密学位论文的定密申请应当在论文开题之前进行。\par
+\textsuperscript{2} 如选“是”，应按国家现行《研究生教育学科专业目录》规范填写所涉其他专业学位类别的名称。\par}
+\clearpage
+
+% ==================== 第 3 页：评语、考核与签名 ====================
+\begin{FormTable}
+  \FormCell{76mm}{%
+    导师评语：（就论文选题意义、研究生对国内外研究现状的了解情况、研究方法、研究手段、预期成果、学术规范等予以评价）\par
+    \vspace{6mm}
+    \formhint{须有导师评语、导师手写签名及日期}\par
+    \AdvisorComment
+    \vfill
+    \hfill 导师签名：\field[25mm]{}\quad 日期：\blankdate\par
+  }\\\hline
+  \FormCell{76mm}{%
+    选题报告会考核成员组意见：（选题和研究工作有无政治立场问题、选题意义、论文工作是否具备条件、是否同意选定该课题；若选题涉及跨专业学位类别，考核小组是否已包含所涉其他专业学位类别的专家，选题是否仍符合所属专业学位类别的要求等）\par
+    \vspace{8mm}
+    \formhint{不填}\par
+    \vfill
+    \hspace{2em}考核成员组签名：\par
+    \vspace{5mm}
+  }\\\hline
+  \FormCell{44mm}{%
+    选题报告考核成绩：（以等级制方式记载。以下评分方法供参考，鼓励院系结合专业学位类别特点制定评分规则。）\par
+    书面报告成绩：\field[32mm]{\formhint{导师填写}}（占60\%，由导师评定）\par
+    口头报告成绩：\field[32mm]{}（占40\%，由考核成员组评定）\par
+    总成绩：\field[28mm]{}\quad 研究所（室）主任签名：\field[25mm]{}\par
+    \hfill 日期：\blankdate\par
+  }\\\hline
+\end{FormTable}
+\clearpage
+
+% ==================== 第 4 页：论文工作计划 ====================
+{\centering\heiti\fontsize{14bp}{20bp}\selectfont
+论\quad 文\quad 工\quad 作\quad 计\quad 划\par}
+\vspace{2mm}
+\begin{FormTable}
+  \FormCell{23mm}{%
+    实验设备或其他研究条件落实情况：\par
+    \ResearchConditions
+  }\\\hline
+  \FormCell{23mm}{%
+    实验安全落实情况请在（\quad）中打“\tick”：\par
+    （1）论文工作中是否涉及实验操作：\hfill 是\option{\ExperimentYes}\quad 否\option{\ExperimentNo}\hspace{12mm}\par
+    （2）是否参加安全教育培训并通过考试：\hfill 是\option{\TrainingYes}\quad 否\option{\TrainingNo}\hspace{12mm}\par
+    （3）是否已提交实验安全分析报告\textsuperscript{3}：\hfill 是\option{\SafetyReportYes}\quad 否\option{\SafetyReportNo}\hspace{12mm}\par
+  }\\\hline
+  \FormCell{28mm}{%
+    课题所属科研项目类别（国家项目、省部委等政府部门项目、企业委托研究项目、学校项目、自选题目、或其他）：\par
+    \ProjectCategory
+  }\\\hline
+  \FormCell{6mm}{论文类型：在所属类型前划“\tick”（只可选择一项填写）}\\\hline
+  \FormCell{17mm}{%
+    \begin{tabularx}{\linewidth}{@{}p{5mm}X|p{5mm}X@{}}
+      \TypeResearch & ① 专题研究类论文 & \TypeSurvey & ② 调研报告\\\hline
+      \TypeCase & ③ 案例分析报告 & \TypeProduct & ④ 产品设计（作品创作）\\\hline
+      \TypeScheme & ⑤ 方案设计 & \TypeOther & ⑥ 其它（详细注明）\OtherTypeDescription
+    \end{tabularx}
+  }\\\hline
+  \FormCell{79mm}{%
+    论文工作主要内容及日程安排：\par
+    \MainWorkPlan
+    \vfill
+    文献阅读、科研调查计划完成日期：\field[81mm]{\LiteratureCompletionDate}\par
+    论文实际工作预计完成日期：\field[91mm]{\ResearchCompletionDate}\par
+    论文撰写预计完成日期：\field[98mm]{\WritingCompletionDate}\par
+  }\\\hline
+\end{FormTable}
+\vspace{1mm}
+本材料留院系研究生管理部门供中期检查、论文抽查时参考。\par
+\vspace{1mm}
+{\fontsize{8bp}{10.5bp}\selectfont
+\textsuperscript{3} 实验安全分析报告使用清华大学实验室管理处网站模板。\par}
+
+\end{document}
