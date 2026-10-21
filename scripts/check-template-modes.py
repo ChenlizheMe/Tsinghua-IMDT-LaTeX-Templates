@@ -34,6 +34,7 @@ try:
         ('reference-first', True, 'imdt-proposal-report.tex', 12, False),
         ('form-first', True, 'imdt-topic-work-plan.tex', 4, False),
         ('writing', False, 'imdt-proposal-report.tex', 7, False),
+        ('hints-only', False, 'imdt-proposal-report.tex', 6, False),
         ('submission', False, 'imdt-proposal-report.tex', 6, True),
         ('form-filled', False, 'imdt-topic-work-plan.tex', 4, True),
         ('reference-final', True, 'imdt-proposal-report.tex', 12, False),
@@ -41,6 +42,9 @@ try:
     ]
     for name, reference, entry, expected_pages, submission in sequence:
         set_mode(reference, submission)
+        if name == 'hints-only':
+            with options.open('a', encoding='utf-8') as stream:
+                stream.write('\n\\imdtsetup{hints=show,examples=hide}\n')
         subprocess.run(['latexmk', '-xelatex', '-jobname=output',
                         '-outdir=build/mode-check', entry], cwd=root, check=True)
         log = (out / 'output.log').read_text(encoding='utf-8', errors='replace')
