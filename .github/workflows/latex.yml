@@ -28,15 +28,14 @@ jobs:
             imdt-topic-work-plan.tex
           latexmk_use_xelatex: true
           texlive_version: 2025
+          post_compile: |
+            set -e
+            mkdir -p build/switch-check/chapters build/switch-check/appendices
+            for root in imdt-proposal-report.tex imdt-topic-work-plan.tex imdt-proposal-report.tex; do
+              latexmk -xelatex -jobname=output -outdir=build/switch-check "$root"
+            done
       - name: Check final logs
-        run: python3 scripts/check-build.py imdt-proposal-report.log imdt-topic-work-plan.log
-      - name: Check switching roots with Overleaf's shared job name
-        run: |
-          mkdir -p build/switch-check/chapters build/switch-check/appendices
-          for root in imdt-proposal-report.tex imdt-topic-work-plan.tex imdt-proposal-report.tex; do
-            latexmk -xelatex -jobname=output -outdir=build/switch-check "$root"
-            python3 scripts/check-build.py build/switch-check/output.log
-          done
+        run: python3 scripts/check-build.py imdt-proposal-report.log imdt-topic-work-plan.log build/switch-check/output.log
       - name: Save compiled PDFs
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
