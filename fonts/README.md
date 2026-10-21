@@ -7,6 +7,7 @@
 - `SimSun.ttc`、`SimHei.ttf`、`Simkai.ttf`、`Simfang.ttf`
 - `times.ttf`、`timesbd.ttf`、`timesi.ttf`、`timesbi.ttf`
 - `arial.ttf`、`arialbd.ttf`、`ariali.ttf`、`arialbi.ttf`
+- `Deng.ttf`（等线；原报告页码使用）
 
 检测到 `fonts/SimSun.ttc` 后，两份主入口自动启用真实宋体、黑体、Times New Roman 和 Arial；楷体和仿宋用于中文斜体与辅助字体。严格模式缺少文件会明确报错，不会静默替换字库。
 

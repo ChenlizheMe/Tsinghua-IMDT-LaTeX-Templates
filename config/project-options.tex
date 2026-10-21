@@ -1,4 +1,8 @@
 % 公共开关：两个主入口共用。
+\newif\ifIMDTReferenceReport
+\IMDTReferenceReporttrue       % true 完整复刻原 Word 十二页；false 正式分章写作模式
+% 供命令行/CI 构建正式稿；Overleaf 用户直接修改上一行即可。
+\ifdefined\IMDTWritingMode\IMDTReferenceReportfalse\fi
 \newif\ifIMDTDraft
 \IMDTDrafttrue                 % false 隐藏写作提示；正式内容不要写在提示宏中
 \newif\ifIMDTPrint

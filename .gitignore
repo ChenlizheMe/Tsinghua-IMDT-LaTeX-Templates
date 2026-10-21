@@ -21,3 +21,5 @@ Thumbs.db
 fonts/*.ttf
 fonts/*.ttc
 fonts/*.otf
+__pycache__/
+*.pyc

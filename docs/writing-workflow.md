@@ -1,5 +1,7 @@
 # 大型稿件写作工作流
 
+默认报告入口完整复刻原 Word 的十二页材料。开始正式写作前，在 `config/project-options.tex` 把 `\IMDTReferenceReporttrue` 改为 `\IMDTReferenceReportfalse`；入口文件保持不变。正式稿的文档顺序与 `includeonly` 在 `report/writing-document.tex` 中维护，章节、文献、图表、附录的目录分工继续保留。
+
 ## 文件分工
 
 个人信息只在 config/metadata.tex 修改一次。报告正文写入 chapters/，一章一个文件；较大的章节也可继续用 input 拆成子文件。主入口只保留文档顺序，不在里面堆积正文与宏包设置。
@@ -12,6 +14,7 @@ config/project-options.tex 中的开关由两个主入口共用。
 
 | 开关 | true 时的行为 | 默认 |
 | --- | --- | --- |
+| IMDTReferenceReport | 完整复刻原 Word 十二页；false 时启用现代正式稿 | true |
 | IMDTDraft | 显示 WriteHere 和 TODO 提示 | true |
 | IMDTPrint | 按研究生指南插入适合双面印刷的必要空白页 | false |
 | IMDTUseWindowsFonts | 使用指南点名的 Windows 中西文字库 | false |
@@ -19,7 +22,7 @@ config/project-options.tex 中的开关由两个主入口共用。
 | IMDTShowSymbols | 生成符号和缩略语说明 | false |
 | IMDTIncludeAppendix | 加入可选排版示例附录 | false |
 
-默认电子版保留“封面—目录—正文”的开题材料顺序。打印模式只影响报告；原始工作计划表继续使用其四页 B5 表格版式。
+正式写作模式的电子版保留“封面—目录—正文”的顺序。打印模式只影响正式稿；原件复刻模式保留源材料的分页，计划表保留四页 B5 固定版式。
 
 正式正文不要放进 WriteHere 或 TODO 内部。应删除整条提示命令，并在其位置写入正常正文；否则关闭草稿提示时，写在提示宏里的内容也会隐藏。
 

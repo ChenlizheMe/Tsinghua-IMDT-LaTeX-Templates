@@ -5,18 +5,25 @@ $bibtex_use = 1;
 $max_repeat = 5;
 @default_files = ('imdt-proposal-report.tex', 'imdt-topic-work-plan.tex');
 
-# Overleaf uses the shared job name "output" for both roots. Discard only
-# that generated root .aux when the selected document changes. Keep chapter
-# caches and PDFs; local builds with distinct job names need no intervention.
+# Discard only the generated root .aux when its entry/mode changes. This
+# also handles reference <-> writing mode on the same report entry.
 sub imdt_xelatex {
     my @args = @_;
     my $source = $$Psource;
     $source =~ s{.*[/\\]}{};
     return system('xelatex', @args) unless
-        $$Pbase eq 'output' && $source =~ /^imdt-(?:proposal-report|topic-work-plan)\.tex$/;
+        $source =~ /^imdt-(?:proposal-report|topic-work-plan)\.tex$/;
     require File::Spec;
-    my $aux = File::Spec->catfile($aux_dir || '.', 'output.aux');
-    my $marker = "% imdt-main: $source";
+    my $aux = File::Spec->catfile($aux_dir || '.', "$$Pbase.aux");
+    my $mode = 'form';
+    if ($source eq 'imdt-proposal-report.tex') {
+        open(my $options, '<', 'config/project-options.tex')
+            or die 'Cannot read report mode';
+        my $settings = do { local $/; <$options> };
+        close($options);
+        $mode = $settings =~ /^\s*\\IMDTReferenceReportfalse\b/m ? 'writing' : 'reference';
+    }
+    my $marker = "% imdt-main: $source; mode: $mode";
     if (-f $aux) {
         open(my $read, '<', $aux) or die "Cannot read generated auxiliary file: $aux";
         my $contents = do { local $/; <$read> };

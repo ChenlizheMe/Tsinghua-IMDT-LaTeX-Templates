@@ -1,36 +1,11 @@
+% 固定四页 B5 表单：版式与原 Word 对齐，字段仍在配置文件中填写。
+\input{config/word-layout}
+\ifIMDTDraft\else\IMDTHideWordHintstrue\fi
 \newcommand{\formhint}[1]{\ifIMDTDraft{\color{red}#1}\fi}
-
 \pagestyle{empty}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0pt}
-\setlength{\tabcolsep}{4pt}
-\setlength{\arrayrulewidth}{0.4pt}
-\linespread{1}
-\xeCJKDeclareCharClass{CJK}{"2460 -> "2465}
-\AtBeginDocument{\fontsize{10.5bp}{14bp}\selectfont}
 \newcommand{\tick}{√}
 \newcommand{\option}[1]{（\makebox[1em][c]{#1}）}
 \newcommand{\field}[2][28mm]{\underline{\makebox[#1][c]{#2}}}
 \newcommand{\blankdate}{\hspace{1em}年\hspace{1em}月\hspace{1em}日}
-\newlength{\FormInnerWidth}
-\setlength{\FormInnerWidth}{\dimexpr\textwidth-2\tabcolsep-2\arrayrulewidth\relax}
-% 单元格设置“最小高度”，填写内容较多时会自然增高，不裁切文字。
-% 每页表格不自动跨页；超出预留空间时请缩减文字或另附续页。
-\newcommand{\FormCell}[2]{%
-  \begingroup
-  \setbox0=\vbox{%
-    \hsize=\linewidth
-    \fontsize{10.5bp}{14bp}\selectfont
-    \setlength{\parindent}{0pt}\setlength{\parskip}{0pt}%
-    \vspace{1.5mm}#2\par\vspace{1.5mm}}%
-  \dimen0=#1\relax
-  \ifdim\dimexpr\ht0+\dp0\relax<\dimen0
-    \setbox0=\vbox to \dimen0{\unvbox0\vfil}%
-  \fi
-  \leavevmode\box0
-  \endgroup}
-\newenvironment{FormTable}
-  {\par\noindent\begin{tabular}{|p{\FormInnerWidth}|}\hline}
-  {\end{tabular}\par}
-\setlist[enumerate]{label=\arabic*.,leftmargin=2em,itemsep=0pt,
-  topsep=0pt,parsep=0pt,partopsep=0pt}

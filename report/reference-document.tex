@@ -1,0 +1,34 @@
+% 原 Word 十二页材料的原生 LaTeX 复刻；不是整页图片或 PDF 插页。
+\ifIMDTUseWindowsFonts
+  \PassOptionsToClass{fontset=none}{ctexart}
+\else
+  \PassOptionsToClass{fontset=fandol}{ctexart}
+\fi
+\documentclass[UTF8,zihao=-4]{ctexart}
+\usepackage{iftex}
+\ifXeTeX\else
+  \PackageError{imdt}{Please select XeLaTeX}{This project requires XeLaTeX.}
+\fi
+\usepackage[paperwidth=595.32bp,paperheight=841.92bp,left=31.75mm,right=31.75mm,top=25.4mm,bottom=25.4mm]{geometry}
+\usepackage{fontspec,xcolor}
+\ifIMDTUseWindowsFonts\input{config/word-fonts}\fi
+\usepackage[hidelinks,unicode]{hyperref}
+\input{config/metadata}
+\input{config/word-layout}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\hypersetup{pdftitle={清华大学IMDT开题报告原件格式材料},pdfauthor={\StudentName}}
+\begin{document}
+\IMDTWordPage{reference-layout/page-01}
+\IMDTWordPage{reference-layout/page-02}
+\IMDTWordPage{reference-layout/page-03}
+\IMDTWordPage{reference-layout/page-04}
+\IMDTWordPage{reference-layout/page-05}
+\IMDTWordPage{reference-layout/page-06}
+\IMDTWordPage{reference-layout/page-07}
+\IMDTWordPage{reference-layout/page-08}
+\IMDTWordPage{reference-layout/page-09}
+\IMDTWordPage{reference-layout/page-10}
+\IMDTWordPage{reference-layout/page-11}
+\IMDTWordPage{reference-layout/page-12}
+\end{document}

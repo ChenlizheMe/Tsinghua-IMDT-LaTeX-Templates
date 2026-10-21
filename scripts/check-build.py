@@ -15,6 +15,7 @@ patterns = {
     "undefined reference": r"(?:Reference|Citation) .+ undefined|There were undefined (?:references|citations)",
     "duplicate label": r"multiply defined",
     "rerun needed": r"Label\(s\) may have changed|Rerun to get cross-references right",
+    "fixed form overflow": r"fixed form value exceeds|Text exceeds a fixed form area",
 }
 
 files = sorted({Path(p) for arg in sys.argv[1:] for p in glob.glob(arg)})

@@ -1,0 +1,101 @@
+% Word 原件的固定版式。静态文字仍是可检索的原生 TeX 字形和规则线。
+% 坐标统一使用 PDF point (bp)，从纸张左下角量起；不插入整页图片/PDF。
+\usepackage{eso-pic,etoolbox,graphicx,pgf}
+\ifIMDTUseWindowsFonts
+  \IfFileExists{fonts/SimSun.ttc}{%
+    \newfontface\IMDTwordsong{SimSun.ttc}[Path=fonts/,FontIndex=0]
+    \newfontface\IMDTwordhei{SimHei.ttf}[Path=fonts/]
+    \newfontface\IMDTwordkai{Simkai.ttf}[Path=fonts/]
+    \newfontface\IMDTwordfs{Simfang.ttf}[Path=fonts/]
+    \newfontface\IMDTwordtimes{times.ttf}[Path=fonts/]
+    \newfontface\IMDTwordtimesbold{timesbd.ttf}[Path=fonts/]
+    \newfontface\IMDTwordtimesitalic{timesi.ttf}[Path=fonts/]
+    \newfontface\IMDTwordarial{arial.ttf}[Path=fonts/]
+    \newfontface\IMDTwordarialbold{arialbd.ttf}[Path=fonts/]
+    \IfFileExists{fonts/Deng.ttf}{\newfontface\IMDTworddeng{Deng.ttf}[Path=fonts/]}{\newfontface\IMDTworddeng{DengXian}}
+  }{%
+    \newfontface\IMDTwordsong{SimSun}
+    \newfontface\IMDTwordhei{SimHei}
+    \newfontface\IMDTwordkai{KaiTi}
+    \newfontface\IMDTwordfs{FangSong}
+    \newfontface\IMDTwordtimes{Times New Roman}
+    \newfontface\IMDTwordtimesbold{Times New Roman Bold}
+    \newfontface\IMDTwordtimesitalic{Times New Roman Italic}
+    \newfontface\IMDTwordarial{Arial}
+    \newfontface\IMDTwordarialbold{Arial Bold}
+    \newfontface\IMDTworddeng{DengXian}
+  }
+\else
+  % 公开仓库不分发商业字库；这些仅为便携预览字体。
+  \newfontface\IMDTwordsong{FandolSong-Regular.otf}
+  \newfontface\IMDTwordhei{FandolHei-Regular.otf}
+  \newfontface\IMDTwordkai{FandolKai-Regular.otf}
+  \newfontface\IMDTwordfs{FandolFang-Regular.otf}
+  \newfontface\IMDTwordtimes{texgyretermes-regular.otf}
+  \newfontface\IMDTwordtimesbold{texgyretermes-bold.otf}
+  \newfontface\IMDTwordtimesitalic{texgyretermes-italic.otf}
+  \newfontface\IMDTwordarial{texgyreheros-regular.otf}
+  \newfontface\IMDTwordarialbold{texgyreheros-bold.otf}
+  \newfontface\IMDTworddeng{texgyreheros-regular.otf}
+\fi
+\newcommand\IMDTGlyph[2]{\rlap{\kern#1bp #2}}
+\newif\ifIMDTHideWordHints
+\IMDTHideWordHintsfalse
+\newcommand\IMDTWordRun[7]{%
+  \def\IMDTShouldPaint{1}%
+  \ifIMDTHideWordHints
+    \ifstrequal{#5}{0,0,0}{}{\def\IMDTShouldPaint{0}}%
+  \fi
+  \ifnum\IMDTShouldPaint=1\relax
+  \put(#1,#2){\hbox{\XeTeXinterchartokenstate=0%
+    \fontsize{#4bp}{#4bp}\selectfont\csname IMDTword#3\endcsname
+    \ifdim#6bp>0bp\addfontfeature{FakeBold=#6}\fi
+    \color[rgb]{#5}#7}}%
+  \fi}
+\newcommand\IMDTWordRect[5]{%
+  \put(#1,#2){\begingroup\color[rgb]{#5}%
+    \begin{pgfpicture}\pgfsetbaseline{0pt}%
+      \pgfpathrectangle{\pgfpointorigin}{\pgfpoint{#3bp}{#4bp}}%
+      \pgfusepath{fill}%
+    \end{pgfpicture}\endgroup}}
+\newcommand\IMDTWordImage[5]{%
+  \put(#1,#2){\includegraphics[width=#3bp,height=#4bp]{#5}}}
+\newcommand\IMDTWordPage[1]{%
+  \AddToShipoutPictureBG*{\AtPageLowerLeft{%
+    \setlength\unitlength{1bp}\begin{picture}(0,0)%
+      \input{#1}%
+    \end{picture}}}%
+  \null\clearpage}
+% 填写值独立于固定文字和横线，仍在 metadata / work-plan-fields 中维护。
+\newsavebox\IMDTValueBox
+\newcommand\IMDTWordValue[5]{%
+  \put(#1,#2){\begingroup\songti\fontsize{#4bp}{#4bp}\selectfont
+    \sbox\IMDTValueBox{#5}%
+    \ifdim\wd\IMDTValueBox>#3bp
+      \PackageWarning{imdt}{A fixed form value exceeds its reserved width}%
+    \fi
+    \makebox[#3bp][c]{\usebox\IMDTValueBox}\endgroup}}
+\newcommand\IMDTWordTitleValue[5]{%
+  \put(#1,#2){\begingroup\XeTeXinterchartokenstate=0%
+    \fontsize{#4bp}{#4bp}\selectfont\IMDTwordhei\addfontfeature{FakeBold=2.857}%
+    \sbox\IMDTValueBox{#5}%
+    \ifdim\wd\IMDTValueBox>#3bp
+      \PackageWarning{imdt}{A fixed form value exceeds its reserved width}%
+    \fi
+    \makebox[#3bp][c]{\usebox\IMDTValueBox}\endgroup}}
+\newsavebox\IMDTAreaBox
+\newcommand\IMDTWordArea[5]{%
+  \begingroup\songti\fontsize{10.56bp}{13.68bp}\selectfont
+  \setbox\IMDTAreaBox=\vbox{\hsize=#3bp\parindent=0pt\parskip=0pt #5\par}%
+  \ifdim\dimexpr\ht\IMDTAreaBox+\dp\IMDTAreaBox\relax>#4bp
+    \PackageWarning{imdt}{Text exceeds a fixed form area; shorten it or attach a continuation}%
+  \fi
+  \put(#1,#2){\raisebox{-\height}{\usebox\IMDTAreaBox}}%
+  \endgroup}
+\newcommand\IMDTDefaultSchoolName{深圳国际研究生院}
+\newcommand\IMDTDefaultMajorName{电子信息（互动媒体设计与技术）}
+\newcommand\IMDTDefaultTitle{请填写论文题目}
+\newcommand\IMDTDefaultFormDate{年\hspace{4.5em}月\hspace{5em}日}
+\newcommand\IMDTDefaultReportDate{\hspace{1em}年\hspace{1em}月\hspace{1em}日}
+\newcommand\IMDTDefaultMeetingDate{\hspace{1em}年\hspace{1em}月\hspace{1em}日}
+\newcommand\IMDTFormTitle{\ifdefstrequal{\ThesisTitle}{\IMDTDefaultTitle}{}{\ThesisTitle}}

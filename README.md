@@ -6,23 +6,27 @@
 
 | 主入口 | 用途 |
 | --- | --- |
-| [imdt-proposal-report.tex](imdt-proposal-report.tex) | A4 开题报告，封面、目录、分章正文、BibTeX 参考文献 |
+| [imdt-proposal-report.tex](imdt-proposal-report.tex) | 默认完整复刻原 Word 的 12 页材料；可切换到分章正文与 BibTeX 的正式写作模式 |
 | [imdt-topic-work-plan.tex](imdt-topic-work-plan.tex) | 原始 202401 版选题及论文工作计划表，保留四页 B5 结构 |
 
-**先修改 [个人信息](config/metadata.tex)，再编辑 [章节](chapters/) 和 [文献库](bib/references.bib)。** 两份原始 Word 已完整放在 [原始材料](references/originals/) 中。
+**先选择报告模式，再修改 [个人信息](config/metadata.tex)。** 两份原始 Word 已完整放在 [原始材料](references/originals/) 中。
+
+在 [公共开关](config/project-options.tex) 中，`\IMDTReferenceReporttrue` 是原件复刻模式，保留全部 12 页说明、封面、空白页、图表示例及两套备选提纲。改为 `\IMDTReferenceReportfalse` 后进入现代写作模式，再编辑 [章节](chapters/) 和 [文献库](bib/references.bib)。两种模式共用同一个报告入口；复刻模式的说明材料不作为正式论文正文提交。
+
+复刻模式和四页计划表使用可检索的原生 LaTeX 字形、规则线及独立填写字段，没有用整页截图或 PDF 背景替代模板。固定表格填写较长时会提示超出预留区域，应精简内容或另附续页；不会悄悄改变表格分页。
 
 ## Overleaf 开始使用
 
 1. 下载整个仓库 ZIP，在 Overleaf 选择 New Project → Upload Project。请上传整个工程，不能只上传两个主入口。
 2. Compiler 选择 **XeLaTeX**。使用近期 TeX Live；工程自带固定版本的排版类和参考文献样式。
-3. Main document 选择上表中的一个主入口，重新编译。Overleaf 的 latexmk 会自动调用 BibTeX；不需要手动维护文献编号。
+3. Main document 选择上表中的一个主入口，重新编译。正式写作模式下 latexmk 自动调用 BibTeX；复刻模式保留原件中的参考文献格式说明。
 4. 切换 Main document 可分别得到报告和工作计划表。根目录的 `latexmkrc` 会自动识别 Overleaf 的共享编译缓存并在入口切换时重建根辅助文件。升级旧项目后如仍读到旧缓存，可选择一次 **Recompile from scratch**。
 
 需要 GitHub 同步时，在 Overleaf 关联 GitHub，再用 New Project → Import from GitHub 导入本仓库。后续通过 Integrations → GitHub 手动推送或拉取。该同步功能需要 Overleaf 的相应订阅权限；没有同步权限也能上传 ZIP 编译。参见 [Overleaf 官方说明](https://docs.overleaf.com/integrations-and-add-ons/git-integration-and-github-synchronization/github-synchronization)。
 
 ## 这个工程提供什么
 
-- 固定使用 **ThuThesis 7.7.1**，由其管理研究生报告的页边距、标题、目录、页眉页码、图表、公式和脚注格式。正文四边页边距为 3 cm，行距为 20 bp。
+- 正式写作模式固定使用 **ThuThesis 7.7.1**，由其管理研究生报告的页边距、标题、目录、页眉页码、图表、公式和脚注格式。正文四边页边距为 3 cm，行距为 20 bp；原件复刻模式保留原 Word 实际版式。
 - **BibTeX + natbib + thuthesis-numeric.bst**：独立 UTF-8 文献库、按首次引用自动排序编号、连续编号压缩、DOI/URL、会议论文条目和中文机构作者。
 - 正文按章节拆分，图、表、封面、附录和表格页分别管理；可用 includeonly 局部编译长稿件。
 - 共用个人信息；草稿提示、打印模式、指定字库、图表清单、术语表和附录均有集中开关。
@@ -41,13 +45,16 @@ config/
   report-setup.tex              报告宏包、引用与自定义命令
   work-plan-fields.tex          计划表的选择项及内容
   form-layout.tex              B5 表格排版
+  word-layout.tex              原件字形、规则线及独立填写字段
+report/                        原件复刻与现代写作两种文档组织
+reference-layout/              原 Word 报告的十二页原生排版
 chapters/                      四章正文，一章一个文件
 frontmatter/                   IMDT 封面、可选术语表
 bib/references.bib             BibTeX 文献库
 figures/                       图片与可编辑矢量图
 tables/                        独立表格
 appendices/                    可选的长稿件写作示例
-forms/                         计划表的四个页面
+forms/                         计划表四页入口及 layout/ 固定版式
 data/                          图表数据和数据说明
 references/originals/          两份原始 Word
 references/guidelines/         完整指南的公开版本
@@ -59,7 +66,7 @@ vendor/thuthesis/              固定上游版本的源文件与许可证
 
 ## 写作与引用
 
-在章节里直接写正文。灰色 WriteHere 和红色 TODO 命令仅用于提示，正式内容应写在这些命令之外。完成后将公共开关中的 IMDTDraft 设为 false，隐藏剩余提示。
+先将 `IMDTReferenceReport` 设为 false，再在章节里直接写正文。灰色 WriteHere 和红色 TODO 命令仅用于提示，正式内容应写在这些命令之外。完成后将公共开关中的 IMDTDraft 设为 false，隐藏剩余提示。
 
 ~~~latex
 \section{研究问题}
@@ -100,6 +107,6 @@ latexmk -xelatex imdt-topic-work-plan.tex
 
 仓库中保留的完整 PDF 明确标为 2025-03，没有把它冒称为 2026 版。逐项规则、来源、已核对范围和 IMDT 专用格式见 [格式依据](docs/formatting-basis.md)。
 
-公开仓库不分发商业字体，默认预览使用 Fandol 与 TeX Gyre。要按原 Word 的字库输出，在私有项目的 `fonts/` 提供真实宋体、黑体、楷体、仿宋、Times New Roman 和 Arial 文件，工程会自动启用；严格模式不会静默替换字体。在已安装字库的 Windows 上也可开启 IMDTUseWindowsFonts。具体文件名和配置见 [字体说明](fonts/README.md)。
+公开仓库不分发商业字体，默认预览使用 Fandol 与 TeX Gyre。要按原 Word 的字库输出，在私有项目的 `fonts/` 提供真实宋体、黑体、楷体、仿宋、等线、Times New Roman 和 Arial 文件，工程会自动启用；严格模式不会静默替换字体。在已安装字库的 Windows 上也可开启 IMDTUseWindowsFonts。具体文件名和配置见 [字体说明](fonts/README.md)。
 
 上游 ThuThesis 文件未经修改，其许可证和来源见 [第三方说明](THIRD_PARTY_NOTICES.md)。
