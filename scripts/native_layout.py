@@ -49,7 +49,7 @@ def render_chars(chars):
         if c['text'].isspace():continue
         font=c['fontname'].split('+')[-1]
         style=FONTS[font]
-        text='√' if font=='SymbolMT' else c['text']
+        text=r'\IMDTWordSymbolRoot{}' if font=='SymbolMT' else escape(c['text'])
         stroke=c['text_stroke']/c['size']*100 if c['render_mode'] in (1,2,5,6) else 0
         color=rgb(c['non_stroking_color'])
         x,y=c['matrix'][4:6]
@@ -59,7 +59,7 @@ def render_chars(chars):
     result=[]
     for r in runs:
         style,size,y,color,stroke=r['key']
-        glyphs=''.join(r'\IMDTGlyph{'+num(x-r['x'])+'}{'+escape(s)+'}' for x,s in r['chars'])
+        glyphs=''.join(r'\IMDTGlyph{'+num(x-r['x'])+'}{'+s+'}' for x,s in r['chars'])
         result.append(r'\IMDTWordRun{'+num(r['x'])+'}{'+num(y)+'}{'+style+'}{'+num(size)+'}{'+color+'}{'+num(stroke)+'}{'+glyphs+'}')
     return '\n'.join(result)
 

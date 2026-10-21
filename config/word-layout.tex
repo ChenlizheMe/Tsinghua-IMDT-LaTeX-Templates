@@ -38,6 +38,22 @@
   \newfontface\IMDTwordarialbold{texgyreheros-bold.otf}
   \newfontface\IMDTworddeng{texgyreheros-regular.otf}
 \fi
+% Word 的两个勾选提示来自旧 Symbol 字体的私用区，不是宋体的根号。
+% 预处理文件仅补 Unicode cmap；原字形、度量、hinting 均不变。
+\IfFileExists{fonts/symbol-unicode.ttf}{%
+  \newfontface\IMDTwordsymbol{symbol-unicode.ttf}[Path=fonts/]
+}{}
+\newcommand\IMDTWordSymbolRoot{%
+  \ifIMDTUseWindowsFonts
+    \ifdefined\IMDTwordsymbol
+      {\IMDTwordsymbol\char"221A}%
+    \else
+      \PackageError{imdt}{Missing fonts/symbol-unicode.ttf}{%
+        Run scripts/prepare-symbol-font.py on your own symbol.ttf, then upload the result.}%
+    \fi
+  \else
+    {\IMDTwordsong\char"221A}%
+  \fi}
 \newcommand\IMDTGlyph[2]{\rlap{\kern#1bp #2}}
 \newif\ifIMDTHideWordHints
 \IMDTHideWordHintsfalse
