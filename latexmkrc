@@ -23,16 +23,24 @@ sub imdt_xelatex {
         close($options);
     }
     my $marker = "% imdt-main: $source; settings: " . Digest::MD5::md5_hex($settings);
+    my $reset = !-f $aux;
     if (-f $aux) {
         open(my $read, '<', $aux) or die "Cannot read generated auxiliary file: $aux";
         my $contents = do { local $/; <$read> };
         close($read);
         if (index($contents, $marker) < 0) {
             unlink($aux) or die "Cannot reset generated auxiliary file: $aux";
+            $reset = 1;
             print "IMDT: reset shared root auxiliary file for $source\n";
         }
     }
     my $status = system('xelatex', @args);
+    # latexmk ignores aux comments when comparing hashes. After a deliberate
+    # reset, unchanged page/label data can otherwise make it stop after one
+    # pass despite missing first-pass PageLabels. Read the regenerated aux once.
+    if ($status == 0 && $reset) {
+        $status = system('xelatex', @args);
+    }
     if ($status == 0 && -f $aux) {
         open(my $write, '>>', $aux) or die "Cannot mark generated auxiliary file: $aux";
         print {$write} "\n$marker\n";
