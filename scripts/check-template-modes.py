@@ -9,31 +9,38 @@ import subprocess
 import sys
 
 root = Path(__file__).resolve().parents[1]
-options = root / 'config/project-options.tex'
+options = root / 'config/user.tex'
 original = options.read_bytes()
 out = root / 'build/mode-check'
 for folder in [out, out / 'chapters', out / 'appendices']:
     folder.mkdir(parents=True, exist_ok=True)
 
-def set_mode(reference):
+def set_mode(reference, submission=False):
     text = original.decode('utf-8')
-    flag = 'true' if reference else 'false'
-    text, count = re.subn(r'(?m)^(\\IMDTReferenceReport)(?:true|false)\b',
-                          lambda match: match.group(1) + flag, text, count=1)
-    if count != 1:
-        raise RuntimeError('Cannot locate the explicit report mode switch')
-    options.write_text(text, encoding='utf-8')
+    mode = 'reference' if reference else 'writing'
+    text += '\n\\imdtsetup{mode='+mode+',hints=show,examples=show}\n'
+    if submission:
+        text += r'''
+\imdtsetup{title={配置接口验证},author={接口测试},student-id={2099000001},
+  supervisor={测试导师},report-date={2026年10月21日},secrecy=public,
+  cross-discipline-check=no,experiment=yes,safety-training=yes,safety-report=yes,
+  thesis-type=product,work-plan={第一阶段完成调研。\par 第二阶段实现系统。}}
+\imdtsubmission
+'''
+    options.write_bytes(text.encode('utf-8'))
 
 try:
     sequence = [
-        ('reference-first', True, 'imdt-proposal-report.tex', 12),
-        ('form-first', True, 'imdt-topic-work-plan.tex', 4),
-        ('writing', False, 'imdt-proposal-report.tex', 7),
-        ('form-second', False, 'imdt-topic-work-plan.tex', 4),
-        ('reference-final', True, 'imdt-proposal-report.tex', 12),
+        ('reference-first', True, 'imdt-proposal-report.tex', 12, False),
+        ('form-first', True, 'imdt-topic-work-plan.tex', 4, False),
+        ('writing', False, 'imdt-proposal-report.tex', 7, False),
+        ('submission', False, 'imdt-proposal-report.tex', 6, True),
+        ('form-filled', False, 'imdt-topic-work-plan.tex', 4, True),
+        ('reference-final', True, 'imdt-proposal-report.tex', 12, False),
+        ('writing-final', False, 'imdt-proposal-report.tex', 7, False),
     ]
-    for name, reference, entry, expected_pages in sequence:
-        set_mode(reference)
+    for name, reference, entry, expected_pages, submission in sequence:
+        set_mode(reference, submission)
         subprocess.run(['latexmk', '-xelatex', '-jobname=output',
                         '-outdir=build/mode-check', entry], cwd=root, check=True)
         log = (out / 'output.log').read_text(encoding='utf-8', errors='replace')

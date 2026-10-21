@@ -9,7 +9,8 @@
       {清华大学硕士学位论文开题报告};
     \node[anchor=base,inner sep=0pt,text width=150mm,align=center,
       font=\heiti\bfseries\fontsize{22bp}{30bp}\selectfont]
-      at ([yshift=-229.58bp]current page.north) {\ThesisTitle};
+      at ([yshift=-229.58bp]current page.north)
+      {\ifdefempty{\ThesisTitle}{\ifIMDTDraft\textcolor{black!45}{请填写论文题目}\fi}{\ThesisTitle}};
     \ifIMDTDraft
       \node[anchor=base,inner sep=0pt,text=red,font=\heiti\bfseries\fontsize{10.5bp}{16bp}\selectfont]
         at ([yshift=-260.90bp]current page.north)

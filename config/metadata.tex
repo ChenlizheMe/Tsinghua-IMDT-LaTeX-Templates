@@ -1,5 +1,8 @@
-% 两个主入口共用的个人信息，只在此填写一次。
-\newcommand{\ThesisTitle}{请填写论文题目} % 不超过 25 个汉字（符）
+% 内部默认值；日常填写使用 config/user.tex 中的 \imdtsetup。
+\ifdefined\IMDTMetadataLoaded\else
+\def\IMDTMetadataLoaded{}
+% 两个主入口共用的内部默认值。通过 config/user.tex 的键覆盖。
+\newcommand{\ThesisTitle}{} % 不超过 25 个汉字（符）
 \newcommand{\StudentName}{}
 \newcommand{\StudentID}{}
 \newcommand{\SchoolName}{深圳国际研究生院}
@@ -9,4 +12,6 @@
 \newcommand{\EnrollmentDate}{}
 \newcommand{\ReportDate}{\hspace{1em}年\hspace{1em}月\hspace{1em}日}
 \newcommand{\FormDate}{年\hspace{4.5em}月\hspace{5em}日}
-\newcommand{\ExpectedDefenseDate}{请填写预计答辩年月}
+\newcommand{\ExpectedDefenseDate}{}
+
+\fi

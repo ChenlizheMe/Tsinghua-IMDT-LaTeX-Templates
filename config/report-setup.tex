@@ -32,6 +32,15 @@
 \usepackage{algpseudocode}
 \usepackage[sort&compress]{natbib}
 \bibliographystyle{thuthesis-numeric}
+% 同时支持数字引用、作者年引用和 \nocite。没有真实引文时不生成空文献表。
+\newif\ifIMDTHasCitations
+\makeatletter
+\pretocmd{\NAT@citexnum}{\global\IMDTHasCitationstrue}{}{\PackageError{imdt}{Cannot track numeric citations}{}}
+\pretocmd{\NAT@citex}{\global\IMDTHasCitationstrue}{}{\PackageError{imdt}{Cannot track citations}{}}
+\pretocmd{\nocite}{\global\IMDTHasCitationstrue}{}{\PackageError{imdt}{Cannot track nocite}{}}
+\makeatother
+\newcommand\IMDTPrintBibliography{%
+  \ifIMDTHasCitations\bibliography{\IMDTBibliographyFiles}\fi}
 \usepackage{xcolor}
 \usepackage{hyperref}
 \hypersetup{hidelinks,unicode,bookmarksnumbered=true,
@@ -55,7 +64,7 @@
 \newcommand{\dif}{\mathop{}\!\mathrm{d}}
 \graphicspath{{figures/}}
 % 提示与待办只在草稿模式显示；正式正文写在这些宏之外。
-\newcommand{\WriteHere}[1]{\ifIMDTDraft{\color{black!55}#1}\par\fi}
+\NewDocumentCommand\WriteHere{+m}{\imdthint{#1}}
 \newcommand{\TODO}[1]{\ifIMDTDraft{\color{red}\textbf{待办：}#1}\par\fi}
 % 防止模板短段落被拉伸成稀疏页面；不会改变正文固定行距。
 \raggedbottom

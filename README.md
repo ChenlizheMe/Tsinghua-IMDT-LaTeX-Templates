@@ -1,112 +1,112 @@
-# 清华大学 IMDT 硕士开题报告与论文工作计划模板
+# 清华大学 IMDT 开题报告与论文工作计划 LaTeX 模板
 
 [![Build LaTeX](https://github.com/ChenlizheMe/Tsinghua-IMDT-LaTeX-Templates/actions/workflows/latex.yml/badge.svg)](https://github.com/ChenlizheMe/Tsinghua-IMDT-LaTeX-Templates/actions/workflows/latex.yml)
 
-面向清华大学深圳国际研究生院电子信息（互动媒体设计与技术，IMDT）的模块化 LaTeX 写作工程。包含两个主入口，适合从开题报告持续扩展为较大规模的研究稿件；不是学校官方发布的 IMDT 模板。
+包含两个主入口；面向清华大学深圳国际研究生院电子信息（互动媒体设计与技术）专业。不是学校官方发布的 IMDT 模板。
 
-| 主入口 | 用途 |
+| 编译入口 | 用途 |
 | --- | --- |
-| [imdt-proposal-report.tex](imdt-proposal-report.tex) | 默认完整复刻原 Word 的 12 页材料；可切换到分章正文与 BibTeX 的正式写作模式 |
-| [imdt-topic-work-plan.tex](imdt-topic-work-plan.tex) | 原始 202401 版选题及论文工作计划表，保留四页 B5 结构 |
+| `imdt-proposal-report.tex` | 默认可直接写作的开题报告：封面、自动目录、分章正文、BibTeX；可切换完整 12 页 Word 对照模式 |
+| `imdt-topic-work-plan.tex` | 4 页 B5 选题及论文工作计划表，共用同一套元信息 |
 
-**先选择报告模式，再修改 [个人信息](config/metadata.tex)。** 两份原始 Word 已完整放在 [原始材料](references/originals/) 中。
+## 先填姓名、学号和题目
 
-在 [公共开关](config/project-options.tex) 中，`\IMDTReferenceReporttrue` 是原件复刻模式，保留全部 12 页说明、封面、空白页、图表示例及两套备选提纲。改为 `\IMDTReferenceReportfalse` 后进入现代写作模式，再编辑 [章节](chapters/) 和 [文献库](bib/references.bib)。两种模式共用同一个报告入口；复刻模式的说明材料不作为正式论文正文提交。
+**只需打开 [config/user.tex](config/user.tex)，在已有 `\imdtsetup` 的花括号内填写。不要修改排版坐标或内部宏。** 例如下面是虚构的填写示例：
 
-复刻模式和四页计划表使用可检索的原生 LaTeX 字形、规则线及独立填写字段，没有用整页截图或 PDF 背景替代模板。固定表格填写较长时会提示超出预留区域，应精简内容或另附续页；不会悄悄改变表格分页。
+```latex
+\imdtsetup{
+  title       = {面向交互体验的原型设计研究},
+  author      = {张三},
+  student-id  = {2026123456},
+  supervisor  = {李老师},
+  report-date = {2026年10月21日},
+  form-date   = {2026年10月21日},
+  defense-date = {2028年6月},
+}
+```
 
-## Overleaf 开始使用
+题目、姓名、学号、培养单位、专业和导师会自动进入两份材料。日期按实际提交日期填写。新项目不预填个人信息。
 
-1. 下载整个仓库 ZIP，在 Overleaf 选择 New Project → Upload Project。请上传整个工程，不能只上传两个主入口。
-2. Compiler 选择 **XeLaTeX**。使用近期 TeX Live；工程自带固定版本的排版类和参考文献样式。
-3. Main document 选择上表中的一个主入口，重新编译。正式写作模式下 latexmk 自动调用 BibTeX；复刻模式保留原件中的参考文献格式说明。
-4. 切换 Main document 可分别得到报告和工作计划表。根目录的 `latexmkrc` 会自动识别 Overleaf 的共享编译缓存并在入口切换时重建根辅助文件。升级旧项目后如仍读到旧缓存，可选择一次 **Recompile from scratch**。
+## 显示、隐藏提示，以及生成正式稿
 
-需要 GitHub 同步时，在 Overleaf 关联 GitHub，再用 New Project → Import from GitHub 导入本仓库。后续通过 Integrations → GitHub 手动推送或拉取。该同步功能需要 Overleaf 的相应订阅权限；没有同步权限也能上传 ZIP 编译。参见 [Overleaf 官方说明](https://docs.overleaf.com/integrations-and-add-ons/git-integration-and-github-synchronization/github-synchronization)。
+这些命令均写在 `config/user.tex` 中；后写的配置覆盖先写的配置。
 
-## 这个工程提供什么
+```latex
+\imdthidehints       % 隐藏所有红色/灰色填写提示
+\imdtshowhints       % 重新显示
+\imdthideexamples    % 隐藏演示图、示例公式、演示引文、示例表格
+\imdtshowexamples    % 重新显示
+```
 
-- 正式写作模式固定使用 **ThuThesis 7.7.1**，由其管理研究生报告的页边距、标题、目录、页眉页码、图表、公式和脚注格式。正文四边页边距为 3 cm，行距为 20 bp；原件复刻模式保留原 Word 实际版式。
-- **BibTeX + natbib + thuthesis-numeric.bst**：独立 UTF-8 文献库、按首次引用自动排序编号、连续编号压缩、DOI/URL、会议论文条目和中文机构作者。
-- 正文按章节拆分，图、表、封面、附录和表格页分别管理；可用 includeonly 局部编译长稿件。
-- 共用个人信息；草稿提示、打印模式、指定字库、图表清单、术语表和附录均有集中开关。
-- 提供可编辑 TikZ 矢量图，以及可选的子图、三线表、表下注释、跨页长表、算法、定义、单位和自动交叉引用示例。
-- 支持 latexmk、Windows PowerShell、Make 和 VS Code LaTeX Workshop；GitHub Actions 自动编译两个 PDF、检查最终日志并保存下载产物。
-- 原始 Word 文件保留原文件名与字节内容，附 SHA-256；学校指南、版本依据和第三方许可证均有记录。
+也可统一用键值配置：
 
-## 工程结构
+```latex
+\imdtsetup{hints=hide, examples=hide}
+```
 
-~~~text
-imdt-proposal-report.tex        报告主入口
-imdt-topic-work-plan.tex        工作计划表主入口
-config/
-  metadata.tex                 两份材料共用的个人信息
-  project-options.tex          草稿、打印、字库、附录等开关
-  report-setup.tex              报告宏包、引用与自定义命令
-  work-plan-fields.tex          计划表的选择项及内容
-  form-layout.tex              B5 表格排版
-  word-layout.tex              原件字形、规则线及独立填写字段
-report/                        原件复刻与现代写作两种文档组织
-reference-layout/              原 Word 报告的十二页原生排版
-chapters/                      四章正文，一章一个文件
-frontmatter/                   IMDT 封面、可选术语表
-bib/references.bib             BibTeX 文献库
-figures/                       图片与可编辑矢量图
-tables/                        独立表格
-appendices/                    可选的长稿件写作示例
-forms/                         计划表四页入口及 layout/ 固定版式
-data/                          图表数据和数据说明
-references/originals/          两份原始 Word
-references/guidelines/         完整指南的公开版本
-docs/                          写作流程、格式核对、来源说明
-scripts/                       构建与编译日志检查
-vendor/thuthesis/              固定上游版本的源文件与许可证
-.github/workflows/latex.yml    自动编译与 PDF 下载
-~~~
+**提交时，在配置文件末尾取消 `\imdtsubmission` 的注释即可。** 该命令启用写作模式，关闭全部提示、演示内容和示例附录。只关闭提示不会删除普通正文；所有你自己的内容都应写在提示命令与示例环境之外。正式稿缺题目、姓名或学号时会在日志中明确提示。
 
-## 写作与引用
+## 正文写在哪里
 
-先将 `IMDTReferenceReport` 设为 false，再在章节里直接写正文。灰色 WriteHere 和红色 TODO 命令仅用于提示，正式内容应写在这些命令之外。完成后将公共开关中的 IMDTDraft 设为 false，隐藏剩余提示。
+在 [chapters/](chapters/) 按章写普通 LaTeX。不要手动给每段加字体和空行调整排版。
 
-~~~latex
-\section{研究问题}
-\label{sec:research-question}
-在此撰写正式正文，并引用相关研究\cite{zimmerman2007rtd}。
-技术路线如\cref{fig:research-route}所示。
-~~~
+```latex
+\chapter{课题背景与意义}
+\section{选题背景}
+这是正式正文。新段落之间留一个空行，模板自动处理缩进和行距。
 
-将 Zotero 或 JabRef 导出的 BibTeX 条目放入文献库，用稳定的文献键引用。不要手写 [1]、[2]，也不要编辑生成的 .bbl 文件。库中附了两篇经 DOI 核对的真实会议论文和学校指南作为演示；它们不能代替本课题应完成的文献阅读。
+这里继续写下一段，并引用真实文献\cite{zimmerman2007rtd}。
+\subsection{研究问题}
+这里写研究问题。
+```
 
-原 IMDT 材料要求不少于 20 篇中外文献、报告不少于 5000 字，题目控制在 25 个汉字（符）以内。正式提交前应替换示例，检查内容要求。更多操作见 [长稿件写作工作流](docs/writing-workflow.md)。
+`\imdthint{这里是写作提示}` 只用于提示。`imdtexample` 环境只用于可整体关闭的示范内容；正式图表、公式和段落不要包在里面。新增章节文件后，在 `config/user.tex` 的 `chapters={...}` 列表中加入文件路径，文档顺序、目录、编号及交叉引用自动更新。
 
-## 本地构建
+## 排版如何保证
 
-需要 TeX Live 或 MiKTeX 中的 XeLaTeX、BibTeX 和 latexmk。默认使用 TeX Live 自带的 Fandol 与 TeX Gyre 字体，无需额外上传字体。
+正文由固定的 **ThuThesis 7.7.1** 自动排版，未改动上游类文件：A4、四边 3 cm；中文宋体、英文 Times New Roman、小四 12 bp、固定 20 bp 行距、段前段后 0、首行缩进两字；章节标题自动采用黑体/Arial 及规定字号和间距。图题在下、表题在上，图表公式按章编号。无需逐段套格式。
 
-~~~powershell
-# Windows：构建两份 PDF，输出到 build/
-.\scripts\build.ps1
-.\scripts\build.ps1 -Target Report
-~~~
+章标题的 Word 段前 24 磅/段后 18 磅由上游针对 Word/TeX 不同行距算法作视觉补偿，不能把 TeX 内部的 27/27 bp 数值直接当成 Word 段距。规则、来源及验证口径见 [格式依据](docs/formatting-basis.md)。报告沿用 IMDT 专用封面；行政表格保持原件 B5 结构。
 
-~~~sh
-# macOS / Linux
-make
-make check
+在私人 Overleaf 的 `fonts/` 提供原字库后，`fonts=auto` 自动启用真实宋体、黑体、Times New Roman、Arial 等；缺失严格字库会报错。公共 ZIP 不分发商业字体，没有原字库时仅用 Fandol/TeX Gyre 便携预览，不能称为原字体。详见 [字体配置](fonts/README.md)。
 
-# 直接使用 latexmk 也可以
-latexmk -xelatex imdt-proposal-report.tex
-latexmk -xelatex imdt-topic-work-plan.tex
-~~~
+## 表格如何填
 
-每次推送到 main，GitHub Actions 都会构建。运行完成后，在 Actions 的对应运行页面下载 imdt-compiled-pdfs。默认提供 14 天的构建产物保留期。
+同样编辑 `config/user.tex`，使用原生选择值，互斥选择自动清空前一项：
 
-## 格式依据与版本
+```latex
+\imdtsetup{
+  meeting-date = {2026年10月21日},
+  secrecy = public,
+  cross-discipline-check = no,
+  experiment = yes, safety-training = yes, safety-report = yes,
+  thesis-type = product,
+  research-conditions = {已具备原型制作与用户研究条件。},
+  work-plan = {第一阶段完成文献调研。\par 第二阶段实现并评价原型。},
+}
+```
 
-本工程核对了清华官方域名发布的 **2025 年 3 月完整研究生写作指南**，并核对了 ThuThesis 维护者公布的 **2026 年 5 月指南与模板修订记录**，采用已适配该更新的 ThuThesis 7.7.1。2026 年公开修订记录指出主要变更为博士、硕士授权页统一；本开题报告不加入学位论文授权页。
+配置文件内已有可取消注释的完整示范；全部字段及选择值见 [使用说明](docs/writing-workflow.md)。填写区自动换行；超出固定四页表格的预留空间会明确报警，应精简或另附续页。
 
-仓库中保留的完整 PDF 明确标为 2025-03，没有把它冒称为 2026 版。逐项规则、来源、已核对范围和 IMDT 专用格式见 [格式依据](docs/formatting-basis.md)。
+## Overleaf 与本地编译
 
-公开仓库不分发商业字体，默认预览使用 Fandol 与 TeX Gyre。要按原 Word 的字库输出，在私有项目的 `fonts/` 提供真实宋体、黑体、楷体、仿宋、等线、Times New Roman 和 Arial 文件，工程会自动启用；严格模式不会静默替换字体。在已安装字库的 Windows 上也可开启 IMDTUseWindowsFonts。具体文件名和配置见 [字体说明](fonts/README.md)。
+1. 下载整个仓库 ZIP，在 Overleaf 选择 New Project → Upload Project。
+2. Compiler 选 **XeLaTeX**，Main document 选上述一个主入口。
+3. 打开 `config/user.tex` 填信息；正文编辑 `chapters/`；文献维护 `bib/references.bib`。
+4. 重新编译；latexmk 自动运行 BibTeX 并解析目录、图表与交叉引用。
 
-上游 ThuThesis 文件未经修改，其许可证和来源见 [第三方说明](THIRD_PARTY_NOTICES.md)。
+GitHub 同步可在 Overleaf Integrations → GitHub 中手动拉取/推送，需要 Overleaf 的相应权限；没有同步权限可用 ZIP。见 [Overleaf 官方说明](https://docs.overleaf.com/integrations-and-add-ons/git-integration-and-github-synchronization/github-synchronization)。
+
+本地支持 `make`、`make check` 和 `scripts/build.ps1`。VS Code 配置已附。GitHub Actions 编译两个入口，并检查写作、提交、原件对照、填写表格及共享缓存切换，保存 PDF 产物。
+
+## 查看原 Word 的完整 12 页
+
+```latex
+\imdtsetup{mode=reference, hints=show}
+```
+
+保留原件全部说明、空白页、图表示例及两套备选提纲；用于对照学习。回到写作使用 `\imdtsetup{mode=writing}`。原件对照采用原生可检索字形与规则线，封面元信息仍可配置；不是整页截图或 PDF 背景。两份原始 Word 保留原文件名和字节，位于 [references/originals/](references/originals/)，附 SHA-256。
+
+## 格式版本与资料
+
+完整条文核对清华官方的 **2025 年 3 月写作指南**，并核对 ThuThesis 维护者记录的 **2026 年 5 月修订**，采用已适配更新的 7.7.1。未取得可独立核验的 2026 完整指南全文，因此所存 PDF 仍明确标为 2025-03。详情见 [格式依据](docs/formatting-basis.md)、[原件核对](docs/source-comparison.md) 和 [第三方说明](THIRD_PARTY_NOTICES.md)。

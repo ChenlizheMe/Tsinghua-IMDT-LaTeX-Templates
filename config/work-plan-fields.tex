@@ -1,4 +1,7 @@
-% 表格专属字段。个人信息在 metadata.tex 中填写。
+% 内部默认值；日常填写使用 config/user.tex 中的 \imdtsetup。
+\ifdefined\IMDTFieldsLoaded\else
+\def\IMDTFieldsLoaded{}
+% 表格内部默认值；通过 config/user.tex 的公共键覆盖。
 
 % 个人信息由 metadata.tex 统一提供。
 \newcommand{\TopicScope}{}
@@ -8,7 +11,7 @@
 \newcommand{\DomesticReferenceCount}{}
 \newcommand{\ForeignReferenceCount}{}
 
-% 需要勾选的项目，把对应的 {} 改为 {\tick}；未选项目留空。
+% 勾选由 secrecy、experiment、thesis-type 等公共键统一设置。
 % 每组“是/否”只能勾选一项；论文类型只可勾选一项。
 \newcommand{\PublicMark}{}
 \newcommand{\SecretMark}{}
@@ -31,7 +34,7 @@
 \newcommand{\TypeOther}{}
 \newcommand{\OtherTypeDescription}{}
 
-% 可在下列宏中直接填写文字；段落之间可以使用 \par。
+% 文本字段由 key-references、work-plan 等公共键赋值，支持 \par。
 \newcommand{\KeyReferences}{}
 \newcommand{\AdvisorComment}{}
 \newcommand{\ResearchConditions}{}
@@ -41,3 +44,5 @@
 \newcommand{\ResearchCompletionDate}{}
 \newcommand{\WritingCompletionDate}{}
 % 考核意见、成绩和手写签名栏按原模板保留空白，交相应人员填写。
+
+\fi

@@ -1,117 +1,103 @@
-# 大型稿件写作工作流
+# 配置指令与正式写作
 
-默认报告入口完整复刻原 Word 的十二页材料。开始正式写作前，在 `config/project-options.tex` 把 `\IMDTReferenceReporttrue` 改为 `\IMDTReferenceReportfalse`；入口文件保持不变。正式稿的文档顺序与 `includeonly` 在 `report/writing-document.tex` 中维护，章节、文献、图表、附录的目录分工继续保留。
+日常只编辑 `config/user.tex`、`chapters/` 和 `bib/references.bib`。两个主入口不需要改排版。`config/metadata.tex`、`work-plan-fields.tex`、`project-options.tex` 是内部存储与初始化，不再作为用户填写入口。
 
-## 文件分工
+## 元信息
 
-个人信息只在 config/metadata.tex 修改一次。报告正文写入 chapters/，一章一个文件；较大的章节也可继续用 input 拆成子文件。主入口只保留文档顺序，不在里面堆积正文与宏包设置。
+在 `\imdtsetup{...}` 中使用下列键，值含逗号或多段内容时放在花括号内。后写的键覆盖前写的键；可分成多个 `\imdtsetup`。
 
-图表放在 figures/ 和 tables/，较长的算法、问卷或补充材料放在 appendices/。数据说明和图表生成依据放在 data/。排版调整统一进入 config/report-setup.tex，避免在各章重复添加字号、间距和颜色命令。
-
-## 草稿与提交模式
-
-config/project-options.tex 中的开关由两个主入口共用。
-
-| 开关 | true 时的行为 | 默认 |
-| --- | --- | --- |
-| IMDTReferenceReport | 完整复刻原 Word 十二页；false 时启用现代正式稿 | true |
-| IMDTDraft | 显示 WriteHere 和 TODO 提示 | true |
-| IMDTPrint | 按研究生指南插入适合双面印刷的必要空白页 | false |
-| IMDTUseWindowsFonts | 使用指南点名的 Windows 中西文字库 | false |
-| IMDTShowLists | 生成插图与附表清单 | false |
-| IMDTShowSymbols | 生成符号和缩略语说明 | false |
-| IMDTIncludeAppendix | 加入可选排版示例附录 | false |
-
-正式写作模式的电子版保留“封面—目录—正文”的顺序。打印模式只影响正式稿；原件复刻模式保留源材料的分页，计划表保留四页 B5 固定版式。
-
-正式正文不要放进 WriteHere 或 TODO 内部。应删除整条提示命令，并在其位置写入正常正文；否则关闭草稿提示时，写在提示宏里的内容也会隐藏。
-
-## BibTeX 文献管理
-
-1. 在 Zotero、JabRef 等工具中整理真实文献，将条目导出或维护为 UTF-8 BibTeX。
-2. 把条目添加到 bib/references.bib。文献键宜稳定，例如作者姓氏、年份和主题词的组合；合作写作时避免多人使用同一个键指向不同论文。
-3. 正文使用 cite，文献表由 BibTeX 自动生成，编号按首次引用排序。同一位置可引用多个键。
-4. 修改文献后让 latexmk 完成整轮编译，不要手动编辑 .aux、.bbl 或 .blg。
-
-~~~latex
-研究方法已有相关讨论\cite{zimmerman2007rtd,wobbrock2007dollar}。
-文献\inlinecite{zimmerman2007rtd}给出了另一种讨论方式。
-~~~
-
-~~~bibtex
-@inproceedings{stableCitationKey,
-  author    = {Family, Given and Family, Given},
-  title     = {Paper title with protected {HCI} capitalization},
-  booktitle = {Conference proceedings title},
-  year      = {2026},
-  publisher = {Publisher},
-  pages     = {1--10},
-  doi       = {Replace with the verified DOI},
-}
-~~~
-
-上面的条目仅演示字段结构，不应直接作为真实文献加入库中。中文机构作者可用双层花括号保护，例如 author = {{清华大学研究生院}}。检查题名、作者、年份、卷期、页码、DOI 等元数据；自动样式无法替代事实核验。
-
-当前默认使用符合清华研究生要求的 thuthesis-numeric.bst，而不是直接套用 ACM/IEEE 会议排版。BibTeX 是文献处理工具，输出样式仍应服从学位论文指南。
-
-## 章节与局部编译
-
-主入口使用 include，便于保存每章辅助信息并选择局部编译。初次先完整编译一次，再启用：
-
-~~~latex
-\includeonly{chapters/03-research-plan}
-~~~
-
-没有完整编译产生的辅助信息时，被排除章节的编号、目录和引用可能暂时不完整。提交或生成最终 PDF 前，重新注释 includeonly 并完整构建。Overleaf 改动较大时可使用 Recompile from scratch。
-
-Overleaf 统一使用 `output` 作为编译任务名。报告与表格采用不同排版类，直接复用根辅助文件会出现如 `\pp@pagectr` 未定义的错误。工程的 `latexmkrc` 通过 latexmk 官方支持的 internal 子程序，在共享根辅助文件中记录当前入口；入口改变时仅重建该生成文件，保留源文件、PDF 和章节缓存。本地使用不同任务名时不执行这一步。旧项目升级后可先 Recompile from scratch 一次，后续正常切换、重编译即可。两份入口已在 Overleaf 的 TeX Live 2026 / XeLaTeX 环境实际验证。
-
-## 图表公式与引用
-
-建议标签命名：
-
-| 对象 | 前缀示例 |
+| 键 | 内容 |
 | --- | --- |
-| 章 | chap:research-plan |
-| 节 | sec:research-question |
-| 图 | fig:research-route |
-| 表 | tab:schedule |
-| 公式 | eq:example |
-| 算法 | alg:iteration |
-| 附录 | app:examples |
+| `title` | 论文题目，最多 25 个汉字（符） |
+| `author` / `student-id` | 姓名 / 学号；保留为文本，前导零不会丢失 |
+| `school` / `major` | 培养单位 / 专业；已有 IMDT 默认值 |
+| `supervisor` / `supervisor-rank` | 学籍系统导师 / 职称；不代填亲笔签名 |
+| `enrollment-date` | 计划表入学年月 |
+| `report-date` / `form-date` | 报告日期 / 表格封面日期 |
+| `defense-date` | 预计答辩年月 |
+| `chapters` | 章节文件顺序，以逗号分隔，不带 `.tex` |
+| `bibliography` | BibTeX 库路径，不带 `.bib`；默认 `bib/references` |
 
-标签必须唯一。图表的 label 放在 caption 后面，正文用 cref 自动生成带对象名称的引用。公式也可使用式加 eqref。不要在正文中手写“见图3.1”，否则移动章节时容易出现错号。
+```latex
+\imdtsetup{author={张三}, student-id={2026123456}}
+```
 
-矢量框图可以用 TikZ；照片、截图和导出的图放到 figures/，由 includegraphics 加载。复用外部图片时注明来源。一个图含多个子图时用 subfigure，并同时给总图和分图设置标签。
+## 开关指令
 
-常规数据表用 booktabs 三线表；需要文本换行时用 tabularx；跨页表使用 longtable，配好续页表头和表尾，不要把 longtable 放进 table 浮动体。表下注释使用 threeparttable。
+| 配置 | 值 | 默认 |
+| --- | --- | --- |
+| `mode` | `writing` 实际写作；`reference` 完整 12 页原件对照 | writing |
+| `hints` | `show` / `hide`：红色和灰色提示 | show |
+| `examples` | `show` / `hide`：演示段落、图、表、公式与引文 | show |
+| `fonts` | `auto` 自动识别私人字库；`windows` 强制真实字库；`portable` 便携预览 | auto |
+| `output` | `electronic` / `print`；打印模式按指南处理右页起始 | electronic |
+| `lists` | `show` / `hide`：插图与附表清单 | hide |
+| `symbols` | `show` / `hide`：术语符号表 | hide |
+| `appendix` | `show` / `hide`：可选排版示例附录，同时要求 examples=show | hide |
 
-可选附录已经演示了子图、表下注释、跨页表、算法、定义、单位和自动引用。启用 IMDTIncludeAppendix 可一起编译检查；正式正文只保留与课题相关的内容。
+便利命令：`\imdtshowhints`、`\imdthidehints`、`\imdtshowexamples`、`\imdthideexamples`。提交命令 `\imdtsubmission` 等价于：
 
-## 字体与打印
+```latex
+\imdtsetup{mode=writing,hints=hide,examples=hide,appendix=hide}
+```
 
-公开预览使用便携字体。按 Word 字库提交时，在私有 Overleaf 项目的 fonts/ 放入字体说明列出的文件；检测到 SimSun.ttc 后自动启用真实字库。也可在装有这些字库的 Windows 上开启 IMDTUseWindowsFonts。两份文档共用 config/word-fonts.tex，正文用宋体，报告标题用黑体，计划表第 4 页标题按原件用加粗宋体，该页脚注用楷体；西文用 Times New Roman，报告标题中的西文用 Arial。严格模式缺少字体文件会报错，不会静默换用 Fandol。字体文件不纳入公共 Git 仓库或 git archive 的 ZIP。
+这些配置在 `config/user.tex` 内设置，再重新编译。不要在正文中切换文档类或字体配置。
 
-开启 IMDTPrint 生成适合双面印刷的必要空白页；使用实际纸张尺寸，报告为 A4，工作计划表为 B5。不要依靠打印机“缩放到纸张”改变原始表格比例。
+## 正式正文、提示和演示的区别
 
-## 构建、核对与协作
+```latex
+\section{研究方法}
+\imdthint{提示：说明实验设计。这条内容可关闭。}
 
-Windows 可运行 scripts/build.ps1。macOS/Linux 可运行 make。latexmk 会自动完成 XeLaTeX、BibTeX 与必要的重复编译。本地脚本将产物放入 build/，该目录已忽略，不提交到 Git。
+这里写你的正式正文，直接写在普通段落中，关闭提示后仍然保留。
+实际方法引用相关研究\cite{zimmerman2007rtd}。
 
-~~~sh
-python scripts/check-build.py build/*.log
-~~~
+\begin{imdtexample}
+这是可整体关闭的示范段落，正式内容不要放在这里。
+\end{imdtexample}
+```
 
-日志检查会对缺字、溢出、未解析引用、重复标签、编译错误和仍需重跑返回非零状态。Underfull 等提示不直接作为错误。日志通过后仍需检查 PDF 页面，尤其是长表、跨页公式、图片、目录和签名栏。
+已有 `\WriteHere` 与 `\TODO` 保持兼容，受同一个 hints 开关控制。不要把真正的正文写进提示或示例命令，否则关闭它们时其中内容也会被隐藏。普通 `figure`、`table`、`equation` 环境始终保留；它们的字号、标题、间距和编号由模板管理。
 
-GitHub Actions 在推送和拉取请求时编译两个主入口，并检查日志。完成后可在运行页面的 Artifacts 下载 PDF。仓库中的原始 Word 和指南仅供对照，不参与编译。
+## 表格字段
 
-合作写作时可按章节分工，个人信息、公共配置与文献库的修改应协调合并。GitHub 与 Overleaf 的同步为手动操作，尽量先拉取再编辑，推送前检查差异，减少同一文件同时修改引起的冲突。
+所有字段均可直接放进 `\imdtsetup`：
 
-## 提交前核对
+| 键 | 内容 |
+| --- | --- |
+| `topic-scope` / `classification-number` | 选题范围 / 定密申请表编号 |
+| `meeting-date` / `cross-discipline` | 开题会议日期 / 跨专业类别 |
+| `domestic-references` / `foreign-references` | 查阅中外文献数量 |
+| `key-references` | 主要文献，可用 `\par` 分段 |
+| `advisor-comment` | 导师评语文本，由相应人员确认使用 |
+| `research-conditions` / `project-category` | 研究条件 / 科研项目类别 |
+| `work-plan` | 工作计划，可多段自动换行 |
+| `literature-due` / `research-due` / `writing-due` | 文献阅读 / 研究 / 论文撰写完成时间 |
+| `other-type` | 选择其他论文类型后的补充说明 |
 
-- 替换所有提示、演示段落、示例图表和日期，按实际课题完善研究内容。
-- 核对 20 篇中外文献、5000 字、25 字题目等 IMDT 原材料中的要求。
-- 完成真实文献元数据与引文的一一核对，确保没有问号、重复标签和缺字。
-- 关闭局部编译与草稿提示，选择所需字体和电子/打印模式，再完整构建。
-- 逐页确认目录、页边距、图表、参考文献、签字和计划表内容。
+选择项使用名称，模板自动定位勾号；重复设置同一组只保留最后一个选择。
+
+| 键 | 允许值 |
+| --- | --- |
+| `secrecy` | `blank` / `public` / `secret` / `confidential` |
+| `cross-discipline-check` / `expert-review` | `blank` / `yes` / `no` |
+| `experiment` / `safety-training` / `safety-report` | `blank` / `yes` / `no` |
+| `thesis-type` | `blank` / `research` / `survey` / `case` / `product` / `scheme` / `other` |
+
+`blank` 清空一组选择。每个填写区超出宽度或高度时会警告，不以改变纸张、字号或分页来硬塞内容。
+
+## 章节与文献
+
+一章一个文件，通过 `\chapter`、`\section`、`\subsection` 自动套用字号、间距及编号。新段落之间留一空行；不要用连续 `\\`、手动 `\vspace` 或 `\fontsize` 排正文。`config/user.tex` 中 `chapters` 列表控制章节顺序。
+
+长稿件先完整编译一次，再在配置末尾使用 `\includeonly{chapters/03-research-plan}` 局部编译；提交前重新注释。被排除章节保留已生成的目录、编号和引用缓存。
+
+BibTeX 使用 `natbib + thuthesis-numeric.bst`，按首次引用排序。真实引文写在普通正文；未引用任何文献的空框架不生成空文献表。有实际 `\cite`、`\citet`、`\citep` 或 `\nocite` 后自动生成文献表。可从 Zotero/JabRef 导入真实会议论文等条目，避免手写编号和编辑 `.bbl`。
+
+图表标签应唯一，图表的 `\label` 放在 `\caption` 后，使用 `\cref{fig:name}`、`\cref{tab:name}`、`\cref{eq:name}` 自动引用。单位置多文献使用 `\cite{key1,key2}`；正文式引文可用 `\inlinecite{key}`。完整示例和数据分别放在 `figures/`、`tables/`、`appendices/`、`data/`。
+
+## 字体、格式和编译
+
+私有 `fonts/` 提供真实字库后自动使用；公开预览的替代字体不作为严格字库一致的证明。正文 12 bp / 20 bp、两字首行缩进、标题层级和 Word 间距补偿由未修改的 ThuThesis 管理。原件对照和行政表格保持原始固定版式；普通写作的正文按段落正常流动和分页。依据见 `formatting-basis.md`。
+
+使用 XeLaTeX。Overleaf 与本地 `latexmk` 自动完成 BibTeX 和重跑；`latexmkrc` 根据入口及用户配置指纹重建生成的根辅助文件，保留章节缓存。检查命令为 `python scripts/check-build.py build/*.log`。GitHub Actions 使用同一个任务名验证写作、提交、原件、表格及切换后的结果。

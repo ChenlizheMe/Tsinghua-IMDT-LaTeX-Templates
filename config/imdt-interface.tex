@@ -1,0 +1,124 @@
+% 公共配置 API；在文档类之前读取，控制字体、模式和共享元信息。
+\RequirePackage{expl3,xparse}
+\ExplSyntaxOn
+\tl_new:N \IMDTBibliographyFiles
+\clist_new:N \g_imdt_chapters_clist
+\clist_gset:Nn \g_imdt_chapters_clist
+  {chapters/01-background,chapters/02-related-work,chapters/03-research-plan,chapters/04-outcomes-schedule}
+\keys_define:nn {imdt}
+{
+  title .tl_gset:N = \ThesisTitle,
+  author .tl_gset:N = \StudentName,
+  student-id .tl_gset:N = \StudentID,
+  school .tl_gset:N = \SchoolName,
+  major .tl_gset:N = \MajorName,
+  supervisor .tl_gset:N = \Supervisor,
+  supervisor-rank .tl_gset:N = \SupervisorRank,
+  enrollment-date .tl_gset:N = \EnrollmentDate,
+  report-date .tl_gset:N = \ReportDate,
+  form-date .tl_gset:N = \FormDate,
+  defense-date .tl_gset:N = \ExpectedDefenseDate,
+  topic-scope .tl_gset:N = \TopicScope,
+  classification-number .tl_gset:N = \ClassificationNumber,
+  meeting-date .tl_gset:N = \ProposalMeetingDate,
+  cross-discipline .tl_gset:N = \CrossDisciplineName,
+  domestic-references .tl_gset:N = \DomesticReferenceCount,
+  foreign-references .tl_gset:N = \ForeignReferenceCount,
+  key-references .tl_gset:N = \KeyReferences,
+  advisor-comment .tl_gset:N = \AdvisorComment,
+  research-conditions .tl_gset:N = \ResearchConditions,
+  project-category .tl_gset:N = \ProjectCategory,
+  work-plan .tl_gset:N = \MainWorkPlan,
+  literature-due .tl_gset:N = \LiteratureCompletionDate,
+  research-due .tl_gset:N = \ResearchCompletionDate,
+  writing-due .tl_gset:N = \WritingCompletionDate,
+  other-type .tl_gset:N = \OtherTypeDescription,
+  secrecy .choice:,
+  secrecy/blank .code:n = { \tl_gclear:N \PublicMark \tl_gclear:N \SecretMark \tl_gclear:N \ConfidentialMark  },
+  secrecy/public .code:n = { \tl_gclear:N \PublicMark \tl_gclear:N \SecretMark \tl_gclear:N \ConfidentialMark \tl_gset:Nn \PublicMark {\tick} },
+  secrecy/secret .code:n = { \tl_gclear:N \PublicMark \tl_gclear:N \SecretMark \tl_gclear:N \ConfidentialMark \tl_gset:Nn \SecretMark {\tick} },
+  secrecy/confidential .code:n = { \tl_gclear:N \PublicMark \tl_gclear:N \SecretMark \tl_gclear:N \ConfidentialMark \tl_gset:Nn \ConfidentialMark {\tick} },
+  cross-discipline-check .choice:,
+  cross-discipline-check/blank .code:n = { \tl_gclear:N \CrossYes \tl_gclear:N \CrossNo  },
+  cross-discipline-check/yes .code:n = { \tl_gclear:N \CrossYes \tl_gclear:N \CrossNo \tl_gset:Nn \CrossYes {\tick} },
+  cross-discipline-check/no .code:n = { \tl_gclear:N \CrossYes \tl_gclear:N \CrossNo \tl_gset:Nn \CrossNo {\tick} },
+  expert-review .choice:,
+  expert-review/blank .code:n = { \tl_gclear:N \ExpertYes \tl_gclear:N \ExpertNo  },
+  expert-review/yes .code:n = { \tl_gclear:N \ExpertYes \tl_gclear:N \ExpertNo \tl_gset:Nn \ExpertYes {\tick} },
+  expert-review/no .code:n = { \tl_gclear:N \ExpertYes \tl_gclear:N \ExpertNo \tl_gset:Nn \ExpertNo {\tick} },
+  experiment .choice:,
+  experiment/blank .code:n = { \tl_gclear:N \ExperimentYes \tl_gclear:N \ExperimentNo  },
+  experiment/yes .code:n = { \tl_gclear:N \ExperimentYes \tl_gclear:N \ExperimentNo \tl_gset:Nn \ExperimentYes {\tick} },
+  experiment/no .code:n = { \tl_gclear:N \ExperimentYes \tl_gclear:N \ExperimentNo \tl_gset:Nn \ExperimentNo {\tick} },
+  safety-training .choice:,
+  safety-training/blank .code:n = { \tl_gclear:N \TrainingYes \tl_gclear:N \TrainingNo  },
+  safety-training/yes .code:n = { \tl_gclear:N \TrainingYes \tl_gclear:N \TrainingNo \tl_gset:Nn \TrainingYes {\tick} },
+  safety-training/no .code:n = { \tl_gclear:N \TrainingYes \tl_gclear:N \TrainingNo \tl_gset:Nn \TrainingNo {\tick} },
+  safety-report .choice:,
+  safety-report/blank .code:n = { \tl_gclear:N \SafetyReportYes \tl_gclear:N \SafetyReportNo  },
+  safety-report/yes .code:n = { \tl_gclear:N \SafetyReportYes \tl_gclear:N \SafetyReportNo \tl_gset:Nn \SafetyReportYes {\tick} },
+  safety-report/no .code:n = { \tl_gclear:N \SafetyReportYes \tl_gclear:N \SafetyReportNo \tl_gset:Nn \SafetyReportNo {\tick} },
+  thesis-type .choice:,
+  thesis-type/blank .code:n = { \tl_gclear:N \TypeResearch \tl_gclear:N \TypeSurvey \tl_gclear:N \TypeCase \tl_gclear:N \TypeProduct \tl_gclear:N \TypeScheme \tl_gclear:N \TypeOther  },
+  thesis-type/research .code:n = { \tl_gclear:N \TypeResearch \tl_gclear:N \TypeSurvey \tl_gclear:N \TypeCase \tl_gclear:N \TypeProduct \tl_gclear:N \TypeScheme \tl_gclear:N \TypeOther \tl_gset:Nn \TypeResearch {\tick} },
+  thesis-type/survey .code:n = { \tl_gclear:N \TypeResearch \tl_gclear:N \TypeSurvey \tl_gclear:N \TypeCase \tl_gclear:N \TypeProduct \tl_gclear:N \TypeScheme \tl_gclear:N \TypeOther \tl_gset:Nn \TypeSurvey {\tick} },
+  thesis-type/case .code:n = { \tl_gclear:N \TypeResearch \tl_gclear:N \TypeSurvey \tl_gclear:N \TypeCase \tl_gclear:N \TypeProduct \tl_gclear:N \TypeScheme \tl_gclear:N \TypeOther \tl_gset:Nn \TypeCase {\tick} },
+  thesis-type/product .code:n = { \tl_gclear:N \TypeResearch \tl_gclear:N \TypeSurvey \tl_gclear:N \TypeCase \tl_gclear:N \TypeProduct \tl_gclear:N \TypeScheme \tl_gclear:N \TypeOther \tl_gset:Nn \TypeProduct {\tick} },
+  thesis-type/scheme .code:n = { \tl_gclear:N \TypeResearch \tl_gclear:N \TypeSurvey \tl_gclear:N \TypeCase \tl_gclear:N \TypeProduct \tl_gclear:N \TypeScheme \tl_gclear:N \TypeOther \tl_gset:Nn \TypeScheme {\tick} },
+  thesis-type/other .code:n = { \tl_gclear:N \TypeResearch \tl_gclear:N \TypeSurvey \tl_gclear:N \TypeCase \tl_gclear:N \TypeProduct \tl_gclear:N \TypeScheme \tl_gclear:N \TypeOther \tl_gset:Nn \TypeOther {\tick} },
+  mode .choice:,
+  mode/writing .code:n = {\IMDTReferenceReportfalse},
+  mode/reference .code:n = {\IMDTReferenceReporttrue},
+  hints .choice:,
+  hints/show .code:n = {\IMDTDrafttrue},
+  hints/hide .code:n = {\IMDTDraftfalse},
+  examples .choice:,
+  examples/show .code:n = {\IMDTShowExamplestrue},
+  examples/hide .code:n = {\IMDTShowExamplesfalse},
+  output .choice:,
+  output/electronic .code:n = {\IMDTPrintfalse},
+  output/print .code:n = {\IMDTPrinttrue},
+  fonts .choice:,
+  fonts/auto .code:n = {\IMDTAutoFontstrue\IMDTUseWindowsFontsfalse},
+  fonts/windows .code:n = {\IMDTAutoFontsfalse\IMDTUseWindowsFontstrue},
+  fonts/portable .code:n = {\IMDTAutoFontsfalse\IMDTUseWindowsFontsfalse},
+  lists .choice:,
+  lists/show .code:n = {\IMDTShowListstrue},
+  lists/hide .code:n = {\IMDTShowListsfalse},
+  symbols .choice:,
+  symbols/show .code:n = {\IMDTShowSymbolstrue},
+  symbols/hide .code:n = {\IMDTShowSymbolsfalse},
+  appendix .choice:,
+  appendix/show .code:n = {\IMDTIncludeAppendixtrue},
+  appendix/hide .code:n = {\IMDTIncludeAppendixfalse},
+  chapters .clist_gset:N = \g_imdt_chapters_clist,
+  bibliography .tl_gset:N = \IMDTBibliographyFiles,
+}
+\tl_gset:Nn \IMDTBibliographyFiles {bib/references}
+\NewDocumentCommand\imdtsetup{+m}{\keys_set:nn{imdt}{#1}}
+\NewDocumentCommand\imdtshowhints{}{\IMDTDrafttrue}
+\NewDocumentCommand\imdthidehints{}{\IMDTDraftfalse}
+\NewDocumentCommand\imdtshowexamples{}{\IMDTShowExamplestrue}
+\NewDocumentCommand\imdthideexamples{}{\IMDTShowExamplesfalse}
+\NewDocumentCommand\imdtsubmission{}{
+  \imdtsetup{mode=writing,hints=hide,examples=hide,appendix=hide}
+}
+\NewDocumentCommand\IMDTIncludeChapters{}{
+  \clist_map_inline:Nn\g_imdt_chapters_clist{\include{##1}}
+}
+\NewDocumentCommand\IMDTValidateMetadata{}{
+  \int_compare:nNnT{\tl_count:V\ThesisTitle}>{25}{
+    \PackageWarning{imdt}{Title~exceeds~25~tokens;~check~config/user.tex}
+  }
+  \ifIMDTDraft\else
+    \clist_map_inline:nn {ThesisTitle,StudentName,StudentID}{
+      \exp_args:Nc \tl_if_blank:VTF {##1}{
+        \PackageWarning{imdt}{Missing~metadata~##1;~fill~config/user.tex}
+      }{}
+    }
+  \fi
+}
+\ExplSyntaxOff
+% 只有提示宏内的文字会隐藏；在它后面直接写正式正文。
+\NewDocumentCommand\imdthint{+m}{\ifIMDTDraft{\color{black!55}#1\par}\fi}
+\NewDocumentEnvironment{imdtexample}{+b}{\ifIMDTShowExamples#1\fi}{}

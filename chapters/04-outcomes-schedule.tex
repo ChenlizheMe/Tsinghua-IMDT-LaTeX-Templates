@@ -6,7 +6,11 @@
 
 \section{论文进度安排}
 \WriteHere{【将表中的占位内容替换为具体年月和可检查的阶段成果。表题在表格上方，图题在图片下方；三线表与编号已设置。】}
+\begin{imdtexample}
 \input{tables/research-schedule}
+\end{imdtexample}
 
 \section{预计答辩时间}
-预计答辩时间：\ExpectedDefenseDate。
+\ifdefempty{\ExpectedDefenseDate}
+  {\imdthint{【在 config/user.tex 中填写 defense-date，或在此直接写预计答辩时间。】}}
+  {预计答辩时间：\ExpectedDefenseDate。}

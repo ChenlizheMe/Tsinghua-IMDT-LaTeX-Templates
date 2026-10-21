@@ -15,6 +15,7 @@
 % \includeonly{chapters/03-research-plan}
 
 \begin{document}
+\IMDTValidateMetadata
 \input{frontmatter/imdt-cover}
 \frontmatter
 \hypersetup{pageanchor=true}
@@ -27,13 +28,10 @@
   \input{frontmatter/symbols}
 \fi
 \mainmatter
-\include{chapters/01-background}
-\include{chapters/02-related-work}
-\include{chapters/03-research-plan}
-\include{chapters/04-outcomes-schedule}
-\bibliography{bib/references}
-\ifIMDTIncludeAppendix
+\IMDTIncludeChapters
+\IMDTPrintBibliography
+\ifIMDTShowExamples\ifIMDTIncludeAppendix
   \appendix
   \include{appendices/writing-examples}
-\fi
+\fi\fi
 \end{document}

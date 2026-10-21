@@ -1,0 +1,50 @@
+% !TeX root = ../imdt-proposal-report.tex
+% 这是唯一的日常配置入口。把值填在花括号内，两份材料自动共用。
+\imdtsetup{
+  mode        = writing,      % writing 正式写作；reference 查看原 Word 的完整 12 页
+  hints       = show,         % show 显示填写提示；hide 隐藏红色/灰色提示
+  examples    = show,         % show 显示示例图表公式和演示引文；hide 全部隐藏
+  fonts       = auto,         % 私人 fonts/ 有原字库时自动使用；portable 仅供预览
+  output      = electronic,  % electronic 电子稿；print 双面打印
+  title       = {},          % 论文题目，不超过 25 个汉字（符）
+  author      = {},          % 你的姓名
+  student-id  = {},          % 你的学号，例如：2026123456
+  school      = {深圳国际研究生院},
+  major       = {电子信息（互动媒体设计与技术）},
+  supervisor  = {},          % 学籍系统登记的导师
+  supervisor-rank = {},      % 计划表导师职称，例如：教授
+  enrollment-date = {},      % 计划表入学年月，例如：2026年9月
+  report-date = {\hspace{1em}年\hspace{1em}月\hspace{1em}日},
+  form-date   = {年\hspace{4.5em}月\hspace{5em}日},
+  defense-date = {},         % 例如：2028年6月
+  bibliography = {bib/references},
+  chapters = {
+    chapters/01-background,
+    chapters/02-related-work,
+    chapters/03-research-plan,
+    chapters/04-outcomes-schedule
+  },
+}
+
+% 计划表专属配置：用 yes/no 或指定名称选择，不必自己定位或画勾。
+% 没有填写的选择项默认留空；不需要的条目保留注释。
+% \imdtsetup{
+%   topic-scope = {选题范围}, meeting-date = {2026年10月21日},
+%   secrecy = public,                 % public / secret / confidential / blank
+%   cross-discipline-check = no,       % yes / no / blank
+%   expert-review = no,                % yes / no / blank
+%   experiment = yes, safety-training = yes, safety-report = yes,
+%   thesis-type = product,            % research / survey / case / product / scheme / other
+%   domestic-references = {12}, foreign-references = {10},
+%   research-conditions = {在此写已有设备与研究条件。},
+%   project-category = {在此写科研项目情况。},
+%   work-plan = {第一阶段完成文献调研。\par 第二阶段实现并评价原型。},
+%   literature-due = {2026年12月}, research-due = {2027年9月},
+%   writing-due = {2028年3月},
+% }
+
+% 提交时取消下一行注释：一次关闭全部提示、演示内容与示例附录。
+% \imdtsubmission
+
+% 大稿件：先完整编译，再按需取消注释以只编译某章；提交前重新注释。
+% \includeonly{chapters/03-research-plan}

@@ -1,19 +1,22 @@
-% 公共开关：两个主入口共用。
-\newif\ifIMDTReferenceReport
-\IMDTReferenceReporttrue       % true 完整复刻原 Word 十二页；false 正式分章写作模式
-% 供命令行/CI 构建正式稿；Overleaf 用户直接修改上一行即可。
+% 内部初始化。日常填写只编辑 config/user.tex。
+\ifdefined\IMDTOptionsLoaded\else
+\def\IMDTOptionsLoaded{}
+\newif\ifIMDTReferenceReport \IMDTReferenceReportfalse
+\newif\ifIMDTDraft \IMDTDrafttrue
+\newif\ifIMDTShowExamples \IMDTShowExamplestrue
+\newif\ifIMDTPrint \IMDTPrintfalse
+\newif\ifIMDTUseWindowsFonts \IMDTUseWindowsFontsfalse
+\newif\ifIMDTAutoFonts \IMDTAutoFontstrue
+\newif\ifIMDTShowLists \IMDTShowListsfalse
+\newif\ifIMDTShowSymbols \IMDTShowSymbolsfalse
+\newif\ifIMDTIncludeAppendix \IMDTIncludeAppendixfalse
+\input{config/metadata}
+\input{config/work-plan-fields}
+\input{config/imdt-interface}
+\input{config/user}
+% 兼容命令行的写作模式覆盖；用户使用 \imdtsetup{mode=...}。
 \ifdefined\IMDTWritingMode\IMDTReferenceReportfalse\fi
-\newif\ifIMDTDraft
-\IMDTDrafttrue                 % false 隐藏写作提示；正式内容不要写在提示宏中
-\newif\ifIMDTPrint
-\IMDTPrintfalse                % true 按指南生成适合双面打印的右页起始
-\newif\ifIMDTUseWindowsFonts
-\IMDTUseWindowsFontsfalse      % true 使用中易宋体/黑体与 Times New Roman/Arial
-\newif\ifIMDTShowLists
-\IMDTShowListsfalse            % 插图清单和附表清单，按需要启用
-\newif\ifIMDTShowSymbols
-\IMDTShowSymbolsfalse          % 符号和缩略语说明
-\newif\ifIMDTIncludeAppendix
-\IMDTIncludeAppendixfalse      % 可选的长表、子图、算法等排版示例
-% 私有工程提供原字库后自动使用 Word 字体，不静默替换为 Fandol。
-\IfFileExists{fonts/SimSun.ttc}{\IMDTUseWindowsFontstrue}{}
+\ifIMDTAutoFonts
+  \IfFileExists{fonts/SimSun.ttc}{\IMDTUseWindowsFontstrue}{}
+\fi
+\fi

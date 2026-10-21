@@ -5,8 +5,8 @@ $bibtex_use = 1;
 $max_repeat = 5;
 @default_files = ('imdt-proposal-report.tex', 'imdt-topic-work-plan.tex');
 
-# Discard only the generated root .aux when its entry/mode changes. This
-# also handles reference <-> writing mode on the same report entry.
+# Discard only the generated root .aux when the entry/settings change.
+# Hash the public setup file rather than guessing values from TeX commands.
 sub imdt_xelatex {
     my @args = @_;
     my $source = $$Psource;
@@ -15,15 +15,14 @@ sub imdt_xelatex {
         $source =~ /^imdt-(?:proposal-report|topic-work-plan)\.tex$/;
     require File::Spec;
     my $aux = File::Spec->catfile($aux_dir || '.', "$$Pbase.aux");
-    my $mode = 'form';
-    if ($source eq 'imdt-proposal-report.tex') {
-        open(my $options, '<', 'config/project-options.tex')
-            or die 'Cannot read report mode';
-        my $settings = do { local $/; <$options> };
+    require Digest::MD5;
+    my $settings = '';
+    for my $file ('config/project-options.tex', 'config/user.tex') {
+        open(my $options, '<', $file) or die "Cannot read $file";
+        $settings .= do { local $/; <$options> };
         close($options);
-        $mode = $settings =~ /^\s*\\IMDTReferenceReportfalse\b/m ? 'writing' : 'reference';
     }
-    my $marker = "% imdt-main: $source; mode: $mode";
+    my $marker = "% imdt-main: $source; settings: " . Digest::MD5::md5_hex($settings);
     if (-f $aux) {
         open(my $read, '<', $aux) or die "Cannot read generated auxiliary file: $aux";
         my $contents = do { local $/; <$read> };
