@@ -39,8 +39,15 @@
 \pretocmd{\NAT@citex}{\global\IMDTHasCitationstrue}{}{\PackageError{imdt}{Cannot track citations}{}}
 \pretocmd{\nocite}{\global\IMDTHasCitationstrue}{}{\PackageError{imdt}{Cannot track nocite}{}}
 \makeatother
+\newwrite\IMDTEmptyBibAux
 \newcommand\IMDTPrintBibliography{%
-  \ifIMDTHasCitations\bibliography{\IMDTBibliographyFiles}\fi}
+  \ifIMDTHasCitations
+    \bibliography{\IMDTBibliographyFiles}%
+  \else
+    % bibunits 在文末重读 bu.aux；无引文时清空该生成缓存，避免旧示例残留。
+    \immediate\openout\IMDTEmptyBibAux=bu.aux\relax
+    \immediate\closeout\IMDTEmptyBibAux
+  \fi}
 \usepackage{xcolor}
 \usepackage{hyperref}
 \hypersetup{hidelinks,unicode,bookmarksnumbered=true,
