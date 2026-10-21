@@ -1,6 +1,8 @@
 % 排版由未修改的 ThuThesis v7.7.1 管理：四边 3cm、20bp 正文行距、
 % 标题层级、目录、页眉页码、图表公式、脚注与参考文献样式。
 % 不在正文中用 \vspace 或 \fontsize 修补版式。
+% math-font 会触发 unicode-math；先加载 mathtools 以保持兼容。
+\usepackage{mathtools}
 \ifIMDTPrint
   \thusetup{output=print}
 \else
@@ -15,7 +17,6 @@
   degree-category={电子信息硕士},
   professional-field={互动媒体设计与技术},
 }
-\usepackage{mathtools}
 \usepackage{amsthm}
 \usepackage{tabularx,longtable,threeparttable,multirow}
 \usepackage{siunitx}
